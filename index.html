@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="École Privée Serigne Souhaibou Mbacke - Excellence éducative à Touba">
+    <title>École Serigne Souhaibou Mbacke - Touba</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a472a;
+            --accent: #d4a574;
+            --light-bg: #f5f5f0;
+            --text-dark: #2c3e50;
+            --text-light: #6c757d;
+            --white: #ffffff;
+            --success: #27ae60;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-dark);
+            background-color: var(--white);
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--primary);
+            padding: 1rem 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: var(--accent);
+            font-size: 1.8rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .logo span {
+            color: var(--white);
+            font-size: 0.9em;
+            display: block;
+            font-weight: normal;
+            letter-spacing: 0;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, #0d3a1f 100%);
+            color: var(--white);
+            padding: 120px 2rem 80px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--primary);
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(212, 165, 116, 0.3);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Sections */
+        section {
+            padding: 5rem 0;
+        }
+
+        section h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 3rem;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        /* About Section */
+        #about {
+            background: var(--light-bg);
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-text h3 {
+            color: var(--accent);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .about-text p {
+            margin-bottom: 1rem;
+            color: var(--text-light);
+            line-height: 1.8;
+        }
+
+        .about-image {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            height: 300px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 3rem;
+        }
+
+        /* Features */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        /* Programs Section */
+        #programs {
+            background: var(--white);
+        }
+
+        .programs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .program-card {
+            background: linear-gradient(135deg, var(--primary) 0%, #0d3a1f 100%);
+            color: var(--white);
+            padding: 2.5rem;
+            border-radius: 10px;
+            transition: transform 0.3s;
+        }
+
+        .program-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .program-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .program-card ul {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .program-card li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .program-card li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* Statistics */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+            text-align: center;
+        }
+
+        .stat {
+            padding: 2rem;
+            background: var(--light-bg);
+            border-radius: 10px;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            color: var(--accent);
+            font-weight: bold;
+            display: block;
+        }
+
+        .stat-label {
+            color: var(--text-dark);
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        /* Gallery Section */
+        #gallery {
+            background: var(--light-bg);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .gallery-item {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            height: 250px;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 3rem;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        /* News Section */
+        #news {
+            background: var(--white);
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .news-card {
+            background: var(--light-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .news-image {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 2.5rem;
+        }
+
+        .news-content {
+            padding: 1.5rem;
+        }
+
+        .news-date {
+            color: var(--accent);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .news-card h3 {
+            color: var(--primary);
+            margin: 0.5rem 0;
+        }
+
+        .news-card p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .testimonial {
+            background: var(--light-bg);
+            padding: 2rem;
+            border-radius: 10px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .testimonial p {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Contact Section */
+        #contact {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        #contact h2 {
+            color: var(--white);
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .contact-icon {
+            font-size: 1.5rem;
+            color: var(--accent);
+            flex-shrink: 0;
+        }
+
+        .contact-item h3 {
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            padding: 0.8rem;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 5px;
+            background: rgba(255,255,255,0.1);
+            color: var(--white);
+            font-family: inherit;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* Footer */
+        footer {
+            background: #0d3a1f;
+            color: var(--white);
+            padding: 2rem 0;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                background: var(--primary);
+                padding: 1rem;
+                gap: 1rem;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            section h2 {
+                font-size: 1.8rem;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animations */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .feature-card, .program-card, .news-card {
+            animation: slideIn 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">SSM<span>Touba</span></div>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#accueil">Accueil</a></li>
+                <li><a href="#about">À Propos</a></li>
+                <li><a href="#programs">Programmes</a></li>
+                <li><a href="#gallery">Galerie</a></li>
+                <li><a href="#news">Actualités</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="accueil">
+        <div class="container">
+            <h1>Bienvenue à l'École Serigne Souhaibou Mbacke</h1>
+            <p>Excellence académique et valeurs morales au cœur de notre formation</p>
+            <a href="#contact" class="cta-button">Découvrir nos programmes</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <h2>À Propos de Notre École</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Une Formation Complète et Équilibrée</h3>
+                    <p>
+                        L'école privée Serigne Souhaibou Mbacke est une institution d'excellence basée à Touba, 
+                        dédiée à la formation intégrale de nos élèves. Nous combinons rigueur académique et valeurs 
+                        éthiques pour préparer les générations futures.
+                    </p>
+                    <p>
+                        Depuis sa création, notre école s'engage à fournir une éducation de qualité supérieure, 
+                        encadrée par une équipe pédagogique compétente et expérimentée.
+                    </p>
+                    <p>
+                        Nos installations modernes et notre environnement propice à l'apprentissage garantissent 
+                        le succès académique et l'épanouissement personnel de chaque élève.
+                    </p>
+                </div>
+                <div class="about-image">📚</div>
+            </div>
+
+            <h3 style="text-align: center; margin-top: 4rem; color: var(--primary); margin-bottom: 2rem;">
+                Nos Forces
+            </h3>
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">👨‍🏫</div>
+                    <h3>Encadrement Qualifié</h3>
+                    <p>Enseignants diplômés et expérimentés, tous passionnés par l'éducation</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🏫</div>
+                    <h3>Infrastructure Moderne</h3>
+                    <p>Salles équipées, bibliothèque, laboratoires et espaces sportifs</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📖</div>
+                    <h3>Curriculum Riche</h3>
+                    <p>Programmes équilibrés alliant académique, culturel et sportif</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌍</div>
+                    <h3>Ouverture Internationale</h3>
+                    <p>Partenariats avec des écoles internationales, apprentissage des langues</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💡</div>
+                    <h3>Pédagogie Active</h3>
+                    <p>Méthodes modernes d'enseignement, apprentissage par projet</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎓</div>
+                    <h3>Suivi Individualisé</h3>
+                    <p>Accompagnement personnel de chaque élève dans son parcours scolaire</p>
+                </div>
+            </div>
+
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-number">500+</span>
+                    <span class="stat-label">Élèves Satisfaits</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">95%</span>
+                    <span class="stat-label">Taux de Réussite</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">30+</span>
+                    <span class="stat-label">Enseignants</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">15+</span>
+                    <span class="stat-label">Ans d'Excellence</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Programs Section -->
+    <section id="programs">
+        <div class="container">
+            <h2>Nos Programmes</h2>
+            <div class="programs-grid">
+                <div class="program-card">
+                    <h3>Cycle Élémentaire</h3>
+                    <p style="margin-bottom: 1rem;">Classe 1 à 6</p>
+                    <ul>
+                        <li>Français, Mathématiques, Sciences</li>
+                        <li>Histoire-Géographie, EPS</li>
+                        <li>Arts plastiques et Musique</li>
+                        <li>Informatique dès le CM1</li>
+                        <li>Anglais renforcé</li>
+                    </ul>
+                </div>
+                <div class="program-card">
+                    <h3>Cycle Moyen</h3>
+                    <p style="margin-bottom: 1rem;">Classes de 6e à 3e</p>
+                    <ul>
+                        <li>Français, Mathématiques, Sciences</li>
+                        <li>Anglais et Espagnol</li>
+                        <li>Histoire-Géographie, Éducation civique</li>
+                        <li>Technologie et Informatique</li>
+                        <li>Accompagnement d'orientation</li>
+                    </ul>
+                </div>
+                <div class="program-card">
+                    <h3>Cycle Secondaire</h3>
+                    <p style="margin-bottom: 1rem;">Classes de 2nde à Terminale</p>
+                    <ul>
+                        <li>Séries Littéraire et Scientifique</li>
+                        <li>Préparation aux examens nationaux</li>
+                        <li>Accompagnement universitaire</li>
+                        <li>Projet professionnel personnalisé</li>
+                        <li>Clubs et activités parascolaires</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery">
+        <div class="container">
+            <h2>Galerie Photos</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item">📸</div>
+                <div class="gallery-item">🏃</div>
+                <div class="gallery-item">🎭</div>
+                <div class="gallery-item">🔬</div>
+                <div class="gallery-item">📚</div>
+                <div class="gallery-item">🏢</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- News Section -->
+    <section id="news">
+        <div class="container">
+            <h2>Actualités et Événements</h2>
+            <div class="news-grid">
+                <div class="news-card">
+                    <div class="news-image">🎓</div>
+                    <div class="news-content">
+                        <div class="news-date">15 Juin 2024</div>
+                        <h3>Cérémonie de Remise de Diplômes</h3>
+                        <p>
+                            Nous avons célébré la promotion 2024 avec fierté. Les élèves ont reçu leurs diplômes 
+                            après une année d'efforts remarquables.
+                        </p>
+                    </div>
+                </div>
+                <div class="news-card">
+                    <div class="news-image">🏆</div>
+                    <div class="news-content">
+                        <div class="news-date">10 Juin 2024</div>
+                        <h3>Championnats Sportifs Régionaux</h3>
+                        <p>
+                            Notre équipe de football a remporté le championnat régional. Félicitations à tous 
+                            nos athlètes pour leur dévouement et leur excellence.
+                        </p>
+                    </div>
+                </div>
+                <div class="news-card">
+                    <div class="news-image">🎨</div>
+                    <div class="news-content">
+                        <div class="news-date">5 Juin 2024</div>
+                        <h3>Festival de la Culture Scolaire</h3>
+                        <p>
+                            Exposition d'arts visuels, représentations théâtrales et concerts musicaux. 
+                            Une belle demonstration du talent de nos élèves.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section>
+        <div class="container">
+            <h2>Témoignages</h2>
+            <div class="testimonials">
+                <div class="testimonial">
+                    <p>
+                        "L'école SSM m'a permis de développer mes compétences académiques tout en 
+                        cultivant mes valeurs. Une expérience transformatrice!"
+                    </p>
+                    <div class="testimonial-author">- Aïssatou Diallo, Ancienne élève</div>
+                </div>
+                <div class="testimonial">
+                    <p>
+                        "Mon fils a fait des progrès remarquables grâce au suivi individualisé et aux 
+                        enseignants attentionnés. Je recommande vivement cette école."
+                    </p>
+                    <div class="testimonial-author">- Père d'élève</div>
+                </div>
+                <div class="testimonial">
+                    <p>
+                        "Un environnement d'apprentissage stimulant où chaque élève est valorisé. 
+                        Fière de travailler au sein de cette équipe."
+                    </p>
+                    <div class="testimonial-author">- Enseignant</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="container">
+            <h2>Nous Contacter</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">📍</div>
+                        <div>
+                            <h3>Adresse</h3>
+                            <p>Touba, Région de Diourbel<br>Sénégal</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">📞</div>
+                        <div>
+                            <h3>Téléphone</h3>
+                            <p>+221 77 XXX XX XX<br>+221 33 XXX XX XX</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">✉️</div>
+                        <div>
+                            <h3>Email</h3>
+                            <p>info@ecoleSSSM.sn<br>admission@ecoleSSSM.sn</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">🕐</div>
+                        <div>
+                            <h3>Horaires</h3>
+                            <p>Lundi - Vendredi: 8h - 16h<br>Samedi: 8h - 12h</p>
+                        </div>
+                    </div>
+                </div>
+                <form class="contact-form" onsubmit="handleSubmit(event)">
+                    <div class="form-group">
+                        <label for="name">Nom Complet</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Téléphone</label>
+                        <input type="tel" id="phone" name="phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Sujet</label>
+                        <input type="text" id="subject" name="subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" required></textarea>
+                    </div>
+                    <button type="submit" class="cta-button" style="background: var(--accent); color: var(--primary);">
+                        Envoyer
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 École Privée Serigne Souhaibou Mbacke. Tous droits réservés.</p>
+            <p style="margin-top: 0.5rem; opacity: 0.8;">Touba, Sénégal | Excellence Éducative</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+
+        // Close menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('navLinks').classList.remove('active');
+            });
+        });
+
+        // Form submission
+        function handleSubmit(event) {
+            event.preventDefault();
+            alert('Merci pour votre message! Nous vous recontacterons très bientôt.');
+            event.target.reset();
+        }
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
