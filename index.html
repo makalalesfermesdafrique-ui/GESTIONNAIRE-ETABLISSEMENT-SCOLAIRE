@@ -1374,17 +1374,22 @@ function exportCSV(){
   const a = document.createElement('a'); a.href=url; a.download="preinscriptions_al_maghreb.csv"; a.click();
 }
 
-
-
 /* ===================== CONFIGURATION SUPABASE ===================== */
+
 const SUPABASE_URL = "https://xeerwmpowlcwdfhhbwez.supabase.co";
+
 const SUPABASE_ANON_KEY = "sb_publishable_S3vV-EY7GX2wX9yhpJo0zA_KMJXtR1S";
-/* ==================================================================== */
+
 const __isConfigured = !SUPABASE_URL.includes("YOUR-PROJECT");
-const __supabase = __isConfigured ? supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+
+const __supabase = __isConfigured 
+    ? supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) 
+    : null;
+
 window.__userRole = null;
 window.__sessionChecked = false;
 
+/* ==================================================================== */
 (async function initAuth(){
   if(__isConfigured){
     const { data:{session} } = await __supabase.auth.getSession();
