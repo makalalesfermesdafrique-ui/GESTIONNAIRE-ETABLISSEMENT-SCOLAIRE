@@ -1,10 +1,16 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Groupe Scolaire AL MAGHREB — Crèche · Maternelle · Primaire · Secondaire</title>
 <meta name="description" content="Groupe Scolaire AL MAGHREB, Diamniadio — de la crèche à la Terminale. Admissions, programmes, vie scolaire et pré-inscription en ligne.">
+
+<link rel="icon" type="image/png" href="logo.png">
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -21,6 +27,8 @@
   --leaf-tint:#EAF3DE;
   --gold:#DE9F31;
   --gold-tint:#FBF0DC;
+  --error:#C1443C;
+  --error-tint:#FBEAE8;
   --border:#E4E1D6;
   --radius:14px;
   --shadow:0 12px 32px -12px rgba(30,34,51,0.18);
@@ -61,7 +69,8 @@ h2{font-size:clamp(26px,3.4vw,36px);font-weight:600;letter-spacing:-.01em;}
 .topbar{position:sticky;top:34px;z-index:59;background:rgba(250,249,245,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);}
 .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 32px;max-width:1180px;margin:0 auto;}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none;}
-.brand-mark{width:40px;height:40px;border-radius:10px;background:linear-gradient(155deg,var(--leaf),var(--primary));display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:700;font-size:16px;color:#fff;flex-shrink:0;}
+.brand-mark{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;}
+.brand-mark img{width:100%;height:100%;object-fit:contain;}
 .brand-text .name{font-family:var(--font-display);font-weight:600;font-size:16px;line-height:1.15;color:var(--primary-dark);}
 .brand-text .sub{font-size:10.5px;color:var(--ink-soft);letter-spacing:.04em;text-transform:uppercase;}
 .nav-links{display:flex;gap:26px;list-style:none;margin:0;padding:0;}
@@ -211,66 +220,9 @@ footer{background:#151934;color:#8B90B3;padding:48px 0 24px;font-size:13px;}
 #mobile-menu a{color:#fff;font-size:17px;font-weight:600;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.12);text-decoration:none;}
 #mobile-menu .close-x{align-self:flex-end;background:none;border:none;color:#fff;font-size:26px;cursor:pointer;}
 
-:root{
-  --ink:#1E2233;
-  --ink-soft:#565B72;
-  --paper:#FAF9F5;
-  --panel:#FFFFFF;
-  --primary:#2E3A8C;
-  --primary-dark:#1B2360;
-  --primary-tint:#EBEDF7;
-  --leaf:#5E9B36;
-  --leaf-tint:#EAF3DE;
-  --gold:#DE9F31;
-  --gold-tint:#FBF0DC;
-  --error:#C1443C;
-  --error-tint:#FBEAE8;
-  --border:#E4E1D6;
-  --radius:14px;
-  --shadow:0 12px 32px -12px rgba(30,34,51,0.18);
-  --font-display:'Fraunces',serif;
-  --font-body:'Inter',sans-serif;
-  --font-mono:'JetBrains Mono',monospace;
-}
-*{box-sizing:border-box;}
-html,body{margin:0;padding:0;}
-body{
-  font-family:var(--font-body);
-  background:var(--paper);
-  color:var(--ink);
-  min-height:100vh;
-  -webkit-font-smoothing:antialiased;
-}
-button{font-family:inherit;}
-::selection{background:var(--gold-tint);}
+/* ===== CONTACT TICKER (wizard app override, same rules kept) ===== */
 
-/* ===== CONTACT TICKER ===== */
-.contact-ticker{
-  background:var(--leaf);color:#fff;overflow:hidden;position:sticky;top:0;z-index:51;
-  height:34px;display:flex;align-items:center;
-}
-.ticker-track{
-  display:flex;align-items:center;white-space:nowrap;
-  animation:ticker-scroll 26s linear infinite;
-}
-.contact-ticker:hover .ticker-track{animation-play-state:paused;}
-.ticker-group{display:flex;align-items:center;flex-shrink:0;}
-.ticker-track span.item{
-  display:inline-flex;align-items:center;gap:6px;padding:0 26px;
-  font-size:12.5px;font-weight:600;letter-spacing:.01em;
-}
-.ticker-track span.item .ico{font-size:13px;}
-.ticker-track span.sep{opacity:.5;}
-@keyframes ticker-scroll{
-  0%{transform:translateX(0);}
-  100%{transform:translateX(-50%);}
-}
-@media(max-width:880px){
-  .contact-ticker{height:30px;}
-  .ticker-track span.item{font-size:11.5px;padding:0 18px;}
-}
-
-/* ===== TOP BAR ===== */
+/* ===== TOP BAR (wizard app) ===== */
 .wiz-topbar{
   display:flex;align-items:center;justify-content:space-between;
   padding:16px 32px;background:var(--primary-dark);color:#fff;
@@ -279,16 +231,6 @@ button{font-family:inherit;}
 @media(max-width:880px){
   .wiz-topbar{top:0;}
 }
-.brand{display:flex;align-items:center;gap:12px;}
-.brand-mark{
-  width:42px;height:42px;border-radius:10px;
-  background:linear-gradient(155deg,var(--leaf),var(--primary));
-  display:flex;align-items:center;justify-content:center;
-  font-family:var(--font-display);font-weight:700;font-size:17px;color:#fff;
-  flex-shrink:0;
-}
-.brand-text .name{font-family:var(--font-display);font-weight:600;font-size:17px;line-height:1.15;}
-.brand-text .sub{font-size:11.5px;color:#C7CBE8;letter-spacing:.04em;text-transform:uppercase;}
 .mode-switch{display:flex;gap:2px;background:rgba(255,255,255,.08);padding:3px;border-radius:10px;}
 .mode-switch button{
   border:none;background:transparent;color:#C7CBE8;padding:8px 16px;border-radius:8px;
@@ -296,12 +238,12 @@ button{font-family:inherit;}
 }
 .mode-switch button.active{background:#fff;color:var(--primary-dark);}
 
-/* ===== LAYOUT ===== */
+/* ===== LAYOUT (wizard app) ===== */
 .app{display:flex;max-width:1240px;margin:0 auto;min-height:calc(100vh - 72px);}
 .view{display:none;}
 .view.active{display:block;width:100%;}
 
-/* ===== HERO ===== */
+/* ===== HERO (wizard) ===== */
 .wiz-hero{
   padding:52px 32px 28px;text-align:center;
 }
@@ -373,7 +315,6 @@ button{font-family:inherit;}
 .field input:focus,.field select:focus,.field textarea:focus{
   outline:none;border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-tint);
 }
-.field input:required:invalid{}
 .field.error input,.field.error select,.field.error textarea{border-color:var(--error);}
 .field-error-msg{font-size:12px;color:var(--error);display:none;}
 .field.error .field-error-msg{display:block;}
@@ -435,15 +376,6 @@ canvas.sigpad{border:1.5px solid var(--border);border-radius:10px;background:#ff
 .sig-tools button{border:1px solid var(--border);background:#fff;border-radius:7px;padding:6px 12px;font-size:12.5px;cursor:pointer;color:var(--ink-soft);}
 
 .nav-row{display:flex;justify-content:space-between;margin-top:28px;}
-.btn{
-  border:none;border-radius:9px;padding:12px 22px;font-size:14px;font-weight:600;cursor:pointer;transition:.15s;
-}
-.btn-primary{background:var(--primary);color:#fff;}
-.btn-primary:hover{background:var(--primary-dark);}
-.btn-ghost{background:transparent;color:var(--ink-soft);border:1.5px solid var(--border);}
-.btn-ghost:hover{border-color:var(--primary);color:var(--primary);}
-.btn-gold{background:var(--gold);color:#fff;}
-.btn-gold:hover{background:#C68A22;}
 
 /* ===== CONFIRMATION ===== */
 .confirm-wrap{max-width:560px;margin:60px auto;text-align:center;padding:0 24px;}
@@ -559,7 +491,7 @@ tbody tr:hover{background:var(--paper);}
 <header class="topbar">
   <nav class="nav">
     <a href="#accueil" class="brand">
-      <div class="brand-mark">AM</div>
+      <div class="brand-mark"><img src="logo.png" alt="Logo AL MAGHREB"></div>
       <div class="brand-text">
         <div class="name">Groupe Scolaire AL MAGHREB</div>
         <div class="sub">Crèche · Maternelle · Primaire · Secondaire</div>
@@ -812,7 +744,7 @@ tbody tr:hover{background:var(--paper);}
   <div class="wrap foot-grid">
     <div>
       <div class="brand" style="margin-bottom:12px;">
-        <div class="brand-mark">AM</div>
+        <div class="brand-mark"><img src="logo.png" alt="Logo AL MAGHREB"></div>
         <div class="brand-text"><div class="name" style="color:#fff;">AL MAGHREB</div><div class="sub" style="color:#8B90B3;">Groupe Scolaire</div></div>
       </div>
       <p style="font-size:12.5px;line-height:1.6;color:#8B90B3;">De la crèche à la Terminale, à Diamniadio. Un parcours éducatif exigeant et bienveillant.</p>
@@ -875,7 +807,7 @@ function showProg(id,btn){
   <button class="overlay-close" onclick="closeApp()">✕ Fermer</button>
 <div class="wiz-topbar">
   <div class="brand">
-    <div class="brand-mark">AM</div>
+    <div class="brand-mark"><img src="logo.png" alt="Logo AL MAGHREB"></div>
     <div class="brand-text">
       <div class="name">Groupe Scolaire AL MAGHREB</div>
       <div class="sub">Crèche · Maternelle · Primaire · Secondaire</div>
