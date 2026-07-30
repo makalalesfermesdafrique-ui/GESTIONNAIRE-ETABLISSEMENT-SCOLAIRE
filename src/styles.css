@@ -1,0 +1,22 @@
+/* src/styles.css
+   Ajout de la classe .brand pour afficher le logo en background et le redimensionner proprement.
+   Utilisez la classe "brand" sur l'élément contenant (par ex. <div class="brand"></div>).
+*/
+
+.brand {
+  width: 220px; /* modifiez cette valeur selon la taille souhaitée */
+  height: 80px; /* modifiez la hauteur pour garder les proportions */
+  background-image: url('/logo.png');
+  background-size: contain; /* ou "cover"/"100% 100%" selon l'effet voulu */
+  background-repeat: no-repeat;
+  background-position: center;
+  display: inline-block; /* permet d'appliquer width/height */
+}
+
+/* Variante responsive : réduire le logo sur petits écrans */
+@media (max-width: 600px) {
+  .brand {
+    width: 160px;
+    height: 60px;
+  }
+}
