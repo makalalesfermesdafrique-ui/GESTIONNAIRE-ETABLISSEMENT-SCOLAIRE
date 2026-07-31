@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Administration — Groupe Scolaire AL MAGHREB</title>
+<link rel="icon" type="image/png" href="logo.png">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1E2233; --ink-soft:#565B72; --paper:#FAF9F5; --panel:#FFFFFF;
+  --primary:#2E3A8C; --primary-dark:#1B2360; --primary-tint:#EBEDF7;
+  --leaf:#5E9B36; --leaf-tint:#EAF3DE; --gold:#DE9F31; --gold-tint:#FBF0DC;
+  --error:#C1443C; --error-tint:#FBEAE8; --border:#E4E1D6; --radius:14px;
+  --shadow:0 12px 32px -12px rgba(30,34,51,0.18);
+  --font-display:'Fraunces',serif; --font-body:'Inter',sans-serif; --font-mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);-webkit-font-smoothing:antialiased;}
+a{color:inherit;text-decoration:none;}
+h1,h2,h3{font-family:var(--font-display);color:var(--primary-dark);margin:0;}
+.btn{display:inline-flex;align-items:center;gap:8px;border:none;border-radius:9px;padding:11px 20px;font-size:13.5px;font-weight:600;cursor:pointer;transition:.15s;}
+.btn-primary{background:var(--primary);color:#fff;} .btn-primary:hover{background:var(--primary-dark);}
+.btn-ghost{background:#fff;color:var(--primary-dark);border:1.5px solid var(--border);} .btn-ghost:hover{border-color:var(--primary);color:var(--primary);}
+.btn-gold{background:var(--gold);color:#fff;} .btn-gold:hover{background:#C68A22;}
+.btn-danger{background:var(--error-tint);color:var(--error);} .btn-danger:hover{background:#F5D6D3;}
+
+/* ===== TOPBAR ===== */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;background:var(--primary-dark);color:#fff;flex-wrap:wrap;gap:12px;position:sticky;top:0;z-index:40;}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand-mark{width:40px;height:40px;border-radius:10px;overflow:hidden;flex-shrink:0;}
+.brand-mark img{width:100%;height:100%;object-fit:contain;}
+.brand-text .name{font-family:var(--font-display);font-weight:600;font-size:15px;}
+.brand-text .sub{font-size:10.5px;color:#B9BEDE;text-transform:uppercase;letter-spacing:.04em;}
+.who{font-size:12.5px;color:#C7CBE8;}
+
+/* ===== LAYOUT ===== */
+.shell{display:flex;min-height:calc(100vh - 68px);}
+.side{width:220px;flex-shrink:0;background:var(--panel);border-right:1px solid var(--border);padding:20px 12px;}
+.side button{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:none;border:none;padding:11px 14px;border-radius:9px;font-size:13.5px;font-weight:600;color:var(--ink-soft);cursor:pointer;margin-bottom:4px;}
+.side button.active{background:var(--primary-tint);color:var(--primary-dark);}
+.side button:hover:not(.active){background:var(--paper);}
+.main{flex:1;min-width:0;padding:26px 28px 60px;}
+.view{display:none;} .view.active{display:block;}
+
+/* ===== LOGIN GATE ===== */
+.gate{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+.gate-card{width:100%;max-width:380px;background:#fff;border-radius:18px;box-shadow:var(--shadow);padding:32px 28px;}
+.gate-card h3{font-size:20px;margin-bottom:4px;}
+.gate-card p{font-size:13px;color:var(--ink-soft);margin:0 0 20px;}
+.gate-card label{font-size:12.5px;font-weight:600;display:block;margin-bottom:6px;}
+.gate-card input{width:100%;border:1.5px solid var(--border);border-radius:9px;padding:10px 12px;font-size:14px;font-family:inherit;margin-bottom:14px;}
+.gate-msg{font-size:12.5px;border-radius:8px;padding:9px 11px;margin-bottom:14px;display:none;background:var(--error-tint);color:var(--error);}
+.gate-msg.show{display:block;}
+.gate-card .btn{width:100%;justify-content:center;}
+
+/* ===== KPI ===== */
+.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:26px;}
+.kpi-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:18px 18px;}
+.kpi-card .num{font-family:var(--font-mono);font-size:26px;font-weight:700;color:var(--primary);}
+.kpi-card .lbl{font-size:11.5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;margin-top:2px;}
+.charts-row{display:grid;grid-template-columns:1.3fr 1fr;gap:16px;margin-bottom:28px;}
+.chart-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:20px;}
+.chart-card h3{font-size:14.5px;margin-bottom:14px;}
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:12.5px;}
+.bar-row .lbl{width:96px;color:var(--ink-soft);flex-shrink:0;}
+.bar-track{flex:1;height:10px;background:var(--paper);border-radius:6px;overflow:hidden;}
+.bar-fill{height:100%;background:linear-gradient(90deg,var(--leaf),var(--primary));}
+.bar-row .val{width:28px;text-align:right;font-family:var(--font-mono);font-weight:600;}
+
+/* ===== TABLE ===== */
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;align-items:center;justify-content:space-between;}
+.filters{display:flex;gap:10px;flex-wrap:wrap;}
+.filters select,.filters input{border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;font-size:13px;font-family:inherit;background:#fff;}
+.table-wrap{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow-x:auto;}
+table{width:100%;min-width:680px;border-collapse:collapse;font-size:13.5px;}
+thead th{text-align:left;padding:12px 16px;background:var(--paper);color:var(--ink-soft);font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;font-weight:700;border-bottom:1px solid var(--border);}
+tbody td{padding:11px 16px;border-bottom:1px solid var(--border);}
+tbody tr:last-child td{border-bottom:none;} tbody tr:hover{background:var(--paper);cursor:pointer;}
+.badge{padding:4px 10px;border-radius:999px;font-size:11.5px;font-weight:700;white-space:nowrap;}
+.badge.actif{background:var(--leaf-tint);color:var(--leaf);}
+.badge.archive{background:#EEE;color:var(--ink-soft);}
+.badge.envoyee{background:var(--primary-tint);color:var(--primary);}
+.badge.etude{background:var(--gold-tint);color:#8A5E14;}
+.badge.acceptee{background:var(--leaf-tint);color:var(--leaf);}
+.badge.attente{background:#F0E7FB;color:#6A3FA0;}
+.badge.refusee{background:var(--error-tint);color:var(--error);}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--primary-tint);color:var(--primary-dark);display:inline-flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:700;object-fit:cover;}
+.row-actions{display:flex;gap:6px;}
+.row-actions button{border:1px solid var(--border);background:#fff;border-radius:6px;padding:5px 9px;font-size:11.5px;cursor:pointer;}
+.row-actions button:hover{border-color:var(--primary);color:var(--primary);}
+.empty-state{text-align:center;color:var(--ink-soft);padding:40px;}
+
+/* ===== MODAL DOSSIER ===== */
+.modal-bg{position:fixed;inset:0;background:rgba(20,22,40,.5);z-index:200;display:none;align-items:flex-start;justify-content:center;padding:40px 20px;overflow-y:auto;}
+.modal-bg.show{display:flex;}
+.modal{width:100%;max-width:560px;background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:0;}
+.modal-head{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:1px solid var(--border);}
+.modal-head h3{font-size:18px;}
+.modal-head button{border:none;background:var(--paper);width:30px;height:30px;border-radius:50%;font-size:15px;cursor:pointer;color:var(--ink-soft);}
+.modal-body{padding:22px 24px;}
+.dossier-top{display:flex;gap:16px;align-items:center;margin-bottom:20px;}
+.dossier-photo{width:72px;height:72px;border-radius:14px;background:var(--primary-tint);color:var(--primary-dark);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:20px;overflow:hidden;flex-shrink:0;}
+.dossier-photo img{width:100%;height:100%;object-fit:cover;}
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px;margin-bottom:18px;}
+.field{display:flex;flex-direction:column;gap:5px;}
+.field label{font-size:11.5px;font-weight:700;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.03em;}
+.field input,.field select,.field textarea{border:1.5px solid var(--border);border-radius:8px;padding:8px 10px;font-size:13.5px;font-family:inherit;}
+.doc-list{list-style:none;margin:0;padding:0;}
+.doc-list li{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;}
+.doc-list li:last-child{border-bottom:none;}
+.modal-foot{display:flex;justify-content:space-between;gap:10px;padding:18px 24px;border-top:1px solid var(--border);}
+
+@media(max-width:980px){.kpi-grid{grid-template-columns:repeat(3,1fr);} .charts-row{grid-template-columns:1fr;}}
+@media(max-width:820px){.shell{flex-direction:column;} .side{width:100%;display:flex;overflow-x:auto;padding:10px;gap:4px;} .side button{white-space:nowrap;width:auto;}}
+@media(max-width:640px){.kpi-grid{grid-template-columns:1fr 1fr;} .field-grid{grid-template-columns:1fr;} .filters{flex-direction:column;width:100%;} .filters select,.filters input{width:100%;}}
+</style>
+</head>
+<body>
+
+<!-- ===== LOGIN GATE ===== -->
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <h3>Administration</h3>
+    <p>Groupe Scolaire AL MAGHREB — accès réservé au personnel.</p>
+    <div class="gate-msg" id="gate-msg"></div>
+    <form id="gate-form">
+      <label>Email</label>
+      <input id="gate-email" type="email" required placeholder="vous@almaghreb.sn" autocomplete="username">
+      <label>Mot de passe</label>
+      <input id="gate-password" type="password" required placeholder="••••••••" autocomplete="current-password">
+      <button class="btn btn-primary" id="gate-submit" type="submit">Se connecter</button>
+    </form>
+  </div>
+</div>
+
+<!-- ===== APP ===== -->
+<div id="app" style="display:none;">
+  <div class="topbar">
+    <div class="brand">
+      <div class="brand-mark"><img src="logo.png" alt="Logo AL MAGHREB"></div>
+      <div class="brand-text"><div class="name">Administration</div><div class="sub">AL MAGHREB — Année 2026-2027</div></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:16px;">
+      <span class="who" id="who-label"></span>
+      <button class="btn btn-ghost" onclick="doLogout()">Déconnexion</button>
+    </div>
+  </div>
+
+  <div class="shell">
+    <nav class="side">
+      <button class="active" data-view="dashboard" onclick="showView('dashboard',this)">📊 Tableau de bord</button>
+      <button data-view="eleves" onclick="showView('eleves',this)">🎒 Élèves</button>
+      <button data-view="preinscriptions" onclick="showView('preinscriptions',this)">📝 Préinscriptions</button>
+    </nav>
+
+    <div class="main">
+
+      <!-- ===== DASHBOARD ===== -->
+      <div class="view active" id="view-dashboard">
+        <h1 style="font-size:24px;margin-bottom:18px;">Tableau de bord</h1>
+        <div class="kpi-grid" id="kpi-grid"></div>
+        <div class="charts-row">
+          <div class="chart-card">
+            <h3>Élèves par cycle</h3>
+            <div id="chart-cycles"></div>
+          </div>
+          <div class="chart-card">
+            <h3>Préinscriptions par statut</h3>
+            <div id="chart-statuts"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== ELEVES ===== -->
+      <div class="view" id="view-eleves">
+        <div class="toolbar">
+          <h1 style="font-size:22px;">Élèves</h1>
+          <button class="btn btn-primary" onclick="openEleveModal(null)">+ Ajouter un élève</button>
+        </div>
+        <div class="filters" style="margin-bottom:16px;">
+          <select id="ef-cycle" onchange="renderElevesTable()">
+            <option value="">Tous les cycles</option>
+            <option>Crèche</option><option>Maternelle</option><option>Primaire</option><option>Secondaire</option>
+          </select>
+          <select id="ef-statut" onchange="renderElevesTable()">
+            <option value="">Actifs et archivés</option>
+            <option value="actif">Actifs</option>
+            <option value="archive">Archivés</option>
+          </select>
+          <input type="text" id="ef-search" placeholder="Rechercher un élève..." oninput="renderElevesTable()">
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th></th><th>Élève</th><th>Cycle</th><th>Classe</th><th>Statut</th><th>Actions</th></tr></thead>
+            <tbody id="eleves-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ===== PREINSCRIPTIONS ===== -->
+      <div class="view" id="view-preinscriptions">
+        <h1 style="font-size:22px;margin-bottom:16px;">Préinscriptions</h1>
+        <div class="filters" style="margin-bottom:16px;">
+          <select id="if-cycle" onchange="renderInscTable()">
+            <option value="">Tous les cycles</option>
+            <option>Crèche</option><option>Maternelle</option><option>Primaire</option><option>Secondaire</option>
+          </select>
+          <select id="if-statut" onchange="renderInscTable()">
+            <option value="">Tous les statuts</option>
+            <option>Pré-inscription envoyée</option><option>En cours d'étude</option>
+            <option>Acceptée</option><option>Liste d'attente</option><option>Refusée</option>
+          </select>
+          <input type="text" id="if-search" placeholder="Rechercher..." oninput="renderInscTable()">
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>N° Dossier</th><th>Élève</th><th>Cycle / Classe</th><th>Parent</th><th>Statut</th><th>Actions</th></tr></thead>
+            <tbody id="insc-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL DOSSIER ELEVE ===== -->
+<div class="modal-bg" id="eleve-modal-bg">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="eleve-modal-title">Dossier élève</h3>
+      <button onclick="closeEleveModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="dossier-top">
+        <div class="dossier-photo" id="dossier-photo">👤</div>
+        <div>
+          <div style="font-weight:700;font-size:16px;" id="dossier-nomcomplet">—</div>
+          <div style="font-size:12.5px;color:var(--ink-soft);" id="dossier-code">—</div>
+        </div>
+      </div>
+      <div class="field-grid">
+        <div class="field"><label>Nom</label><input id="fe-nom"></div>
+        <div class="field"><label>Prénom</label><input id="fe-prenom"></div>
+        <div class="field"><label>Sexe</label><select id="fe-sexe"><option>Masculin</option><option>Féminin</option></select></div>
+        <div class="field"><label>Date de naissance</label><input type="date" id="fe-naissance"></div>
+        <div class="field"><label>Cycle</label>
+          <select id="fe-cycle" onchange="populateClasseOptions()">
+            <option value="">—</option><option>Crèche</option><option>Maternelle</option><option>Primaire</option><option>Secondaire</option>
+          </select>
+        </div>
+        <div class="field"><label>Classe</label><select id="fe-classe"><option value="">—</option></select></div>
+        <div class="field"><label>Statut</label><select id="fe-statut"><option value="actif">Actif</option><option value="archive">Archivé</option></select></div>
+        <div class="field"><label>Code élève</label><input id="fe-code" placeholder="Généré automatiquement"></div>
+      </div>
+      <div class="field" style="margin-bottom:16px;">
+        <label>Observations (dossier)</label>
+        <textarea id="fe-notes" rows="3"></textarea>
+      </div>
+      <div>
+        <label style="font-size:11.5px;font-weight:700;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.03em;">Documents</label>
+        <ul class="doc-list" id="dossier-docs"></ul>
+        <div style="display:flex;gap:8px;margin-top:8px;">
+          <input type="text" id="new-doc-name" placeholder="Nom du document (ex: Extrait de naissance)" style="flex:1;border:1.5px solid var(--border);border-radius:8px;padding:8px 10px;font-size:13px;">
+          <button class="btn btn-ghost" onclick="addDocEntry()">+ Ajouter</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-danger" id="btn-archive-eleve" onclick="toggleArchiveEleve()" style="display:none;">Archiver</button>
+      <div style="display:flex;gap:10px;margin-left:auto;">
+        <button class="btn btn-ghost" onclick="closeEleveModal()">Annuler</button>
+        <button class="btn btn-primary" onclick="saveEleve()">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============ SUPABASE CONFIG (même projet que index.html / preinscription.html) ============ */
+const SUPABASE_URL = "https://xeerwmpowlcwdfhhbwez.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_S3vV-EY7GX2wX9yhpJo0zA_KMJXtR1S";
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const STAFF_ROLES = ['super_admin','directeur','secretaire','comptable'];
+const CLASSES_BY_CYCLE = {
+  "Crèche": ["Crèche"],
+  "Maternelle": ["Petite Section","Moyenne Section","Grande Section"],
+  "Primaire": ["CI","CP","CE1","CE2","CM1","CM2"],
+  "Secondaire": ["6ème","5ème","4ème","3ème","2nde","1ère","Terminale"]
+};
+
+let CURRENT_USER = null;
+let ELEVES = [], INSCRIPTIONS = [], CLASSES = [];
+let editingEleveId = null;
+let editingDocs = [];
+
+/* ============ AUTH GATE ============ */
+document.getElementById('gate-form').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const msg = document.getElementById('gate-msg'); msg.classList.remove('show');
+  const btn = document.getElementById('gate-submit'); btn.disabled=true; btn.textContent="Connexion...";
+  const email = document.getElementById('gate-email').value.trim();
+  const password = document.getElementById('gate-password').value;
+  const { data, error } = await sb.auth.signInWithPassword({ email, password });
+  btn.disabled=false; btn.textContent="Se connecter";
+  if(error){ msg.textContent="Email ou mot de passe incorrect."; msg.classList.add('show'); return; }
+
+  const { data: profile, error: pErr } = await sb.from('profiles').select('*').eq('id', data.user.id).single();
+  if(pErr || !profile || !STAFF_ROLES.includes(profile.role)){
+    msg.textContent = "Ce compte n'a pas accès à l'administration.";
+    msg.classList.add('show');
+    await sb.auth.signOut();
+    return;
+  }
+  CURRENT_USER = profile;
+  enterApp();
+});
+
+async function checkExistingSession(){
+  const { data:{session} } = await sb.auth.getSession();
+  if(!session) return;
+  const { data: profile } = await sb.from('profiles').select('*').eq('id', session.user.id).single();
+  if(profile && STAFF_ROLES.includes(profile.role)){ CURRENT_USER = profile; enterApp(); }
+}
+
+function enterApp(){
+  document.getElementById('gate').style.display='none';
+  document.getElementById('app').style.display='block';
+  document.getElementById('who-label').textContent = `${CURRENT_USER.prenom||''} ${CURRENT_USER.nom||''} · ${CURRENT_USER.role}`;
+  loadAll();
+}
+
+function doLogout(){ sb.auth.signOut().then(()=>location.reload()); }
+
+/* ============ VIEW SWITCH ============ */
+function showView(name, btn){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+name).classList.add('active');
+  document.querySelectorAll('.side button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+/* ============ LOAD DATA ============ */
+async function loadAll(){
+  const [{data:eleves}, {data:insc}, {data:classes}] = await Promise.all([
+    sb.from('eleves').select('*').order('created_at',{ascending:false}),
+    sb.from('inscriptions').select('*').order('created_at',{ascending:false}),
+    sb.from('classes').select('*')
+  ]);
+  ELEVES = eleves || []; INSCRIPTIONS = insc || []; CLASSES = classes || [];
+  renderDashboard(); renderElevesTable(); renderInscTable();
+}
+
+/* ============ DASHBOARD ============ */
+function renderDashboard(){
+  const total = ELEVES.filter(e=>e.statut==='actif').length;
+  const byCycleEleve = {};
+  ELEVES.filter(e=>e.statut==='actif').forEach(e=>{
+    const cl = CLASSES.find(c=>c.id===e.classe_id);
+    const cycle = cl ? cl.cycle : '—';
+    byCycleEleve[cycle] = (byCycleEleve[cycle]||0)+1;
+  });
+  const inscTotal = INSCRIPTIONS.length;
+  const byStatut = {};
+  INSCRIPTIONS.forEach(i=>byStatut[i.statut]=(byStatut[i.statut]||0)+1);
+
+  document.getElementById('kpi-grid').innerHTML = `
+    <div class="kpi-card"><div class="num">${total}</div><div class="lbl">Élèves actifs</div></div>
+    <div class="kpi-card"><div class="num">${inscTotal}</div><div class="lbl">Préinscriptions totales</div></div>
+    <div class="kpi-card"><div class="num">${byStatut['En cours d\\'étude']||0}</div><div class="lbl">Dossiers en étude</div></div>
+    <div class="kpi-card"><div class="num">${byStatut['Acceptée']||0}</div><div class="lbl">Dossiers acceptés</div></div>
+    <div class="kpi-card"><div class="num">${CLASSES.length}</div><div class="lbl">Classes créées</div></div>
+  `;
+
+  const maxCycle = Math.max(1, ...Object.values(byCycleEleve));
+  document.getElementById('chart-cycles').innerHTML = ["Crèche","Maternelle","Primaire","Secondaire"].map(c=>{
+    const v = byCycleEleve[c]||0;
+    return `<div class="bar-row"><div class="lbl">${c}</div><div class="bar-track"><div class="bar-fill" style="width:${(v/maxCycle*100)}%"></div></div><div class="val">${v}</div></div>`;
+  }).join('');
+
+  const maxStatut = Math.max(1, ...Object.values(byStatut));
+  const statuts = ["Pré-inscription envoyée","En cours d'étude","Acceptée","Liste d'attente","Refusée"];
+  document.getElementById('chart-statuts').innerHTML = statuts.map(s=>{
+    const v = byStatut[s]||0;
+    return `<div class="bar-row"><div class="lbl">${s}</div><div class="bar-track"><div class="bar-fill" style="width:${(v/maxStatut*100)}%"></div></div><div class="val">${v}</div></div>`;
+  }).join('');
+}
+
+/* ============ ELEVES TABLE ============ */
+function renderElevesTable(){
+  const cycle = document.getElementById('ef-cycle').value;
+  const statut = document.getElementById('ef-statut').value;
+  const search = document.getElementById('ef-search').value.toLowerCase();
+  const rows = ELEVES.filter(e=>{
+    const cl = CLASSES.find(c=>c.id===e.classe_id);
+    const eCycle = cl ? cl.cycle : '';
+    if(cycle && eCycle!==cycle) return false;
+    if(statut && e.statut!==statut) return false;
+    if(search && !((e.nom+' '+e.prenom).toLowerCase().includes(search))) return false;
+    return true;
+  });
+  document.getElementById('eleves-tbody').innerHTML = rows.map(e=>{
+    const cl = CLASSES.find(c=>c.id===e.classe_id);
+    const initials = ((e.prenom||' ')[0]+(e.nom||' ')[0]).toUpperCase();
+    return `<tr onclick="openEleveModal('${e.id}')">
+      <td>${e.photo_url?`<img class="avatar" src="${e.photo_url}">`:`<span class="avatar">${initials}</span>`}</td>
+      <td>${e.prenom} ${e.nom}</td>
+      <td>${cl?cl.cycle:'—'}</td>
+      <td>${cl?cl.nom:'—'}</td>
+      <td><span class="badge ${e.statut}">${e.statut==='actif'?'Actif':'Archivé'}</span></td>
+      <td class="row-actions" onclick="event.stopPropagation()">
+        <button onclick="openEleveModal('${e.id}')">Ouvrir le dossier</button>
+      </td>
+    </tr>`;
+  }).join('') || `<tr><td colspan="6" class="empty-state">Aucun élève trouvé.</td></tr>`;
+}
+
+/* ============ DOSSIER MODAL ============ */
+function populateClasseOptions(){
+  const cycle = document.getElementById('fe-cycle').value;
+  const sel = document.getElementById('fe-classe');
+  const names = CLASSES_BY_CYCLE[cycle] || [];
+  sel.innerHTML = '<option value="">—</option>' + names.map(n=>{
+    const existing = CLASSES.find(c=>c.nom===n && c.cycle===cycle);
+    return `<option value="${existing?existing.id:'new:'+n}">${n}</option>`;
+  }).join('');
+}
+
+function openEleveModal(id){
+  editingEleveId = id;
+  const e = id ? ELEVES.find(x=>x.id===id) : null;
+  editingDocs = e ? (e.documents||[]) : [];
+
+  document.getElementById('eleve-modal-title').textContent = e ? 'Dossier élève' : 'Nouvel élève';
+  document.getElementById('dossier-nomcomplet').textContent = e ? `${e.prenom} ${e.nom}` : 'Nouveau dossier';
+  document.getElementById('dossier-code').textContent = e ? (e.code_eleve||'—') : 'Code généré à l\'enregistrement';
+  document.getElementById('dossier-photo').innerHTML = e && e.photo_url ? `<img src="${e.photo_url}">` : '👤';
+
+  document.getElementById('fe-nom').value = e?.nom || '';
+  document.getElementById('fe-prenom').value = e?.prenom || '';
+  document.getElementById('fe-sexe').value = e?.sexe || 'Masculin';
+  document.getElementById('fe-naissance').value = e?.date_naissance || '';
+  document.getElementById('fe-code').value = e?.code_eleve || '';
+  document.getElementById('fe-notes').value = e?.notes_dossier || '';
+  document.getElementById('fe-statut').value = e?.statut || 'actif';
+
+  const cl = e ? CLASSES.find(c=>c.id===e.classe_id) : null;
+  document.getElementById('fe-cycle').value = cl ? cl.cycle : '';
+  populateClasseOptions();
+  document.getElementById('fe-classe').value = cl ? cl.id : '';
+
+  document.getElementById('btn-archive-eleve').style.display = e ? 'inline-flex' : 'none';
+  document.getElementById('btn-archive-eleve').textContent = e && e.statut==='archive' ? 'Réactiver' : 'Archiver';
+
+  renderDocList();
+  document.getElementById('eleve-modal-bg').classList.add('show');
+}
+function closeEleveModal(){ document.getElementById('eleve-modal-bg').classList.remove('show'); }
+
+function renderDocList(){
+  document.getElementById('dossier-docs').innerHTML = editingDocs.length
+    ? editingDocs.map((d,i)=>`<li>📎 ${d.nom || d}<button class="btn btn-ghost" style="padding:3px 8px;font-size:11px;" onclick="removeDocEntry(${i})">Retirer</button></li>`).join('')
+    : '<li style="color:var(--ink-soft);">Aucun document enregistré.</li>';
+}
+function addDocEntry(){
+  const input = document.getElementById('new-doc-name');
+  if(!input.value.trim()) return;
+  editingDocs.push({nom: input.value.trim()});
+  input.value = '';
+  renderDocList();
+}
+function removeDocEntry(i){ editingDocs.splice(i,1); renderDocList(); }
+
+async function ensureClasseId(){
+  const val = document.getElementById('fe-classe').value;
+  const cycle = document.getElementById('fe-cycle').value;
+  if(!val) return null;
+  if(!val.startsWith('new:')) return val;
+  const nom = val.slice(4);
+  const { data, error } = await sb.from('classes').insert({ nom, cycle, annee_scolaire:'2026-2027' }).select().single();
+  if(error){ alert("Erreur création classe : "+error.message); return null; }
+  CLASSES.push(data);
+  return data.id;
+}
+
+async function saveEleve(){
+  const classe_id = await ensureClasseId();
+  const payload = {
+    nom: document.getElementById('fe-nom').value.trim(),
+    prenom: document.getElementById('fe-prenom').value.trim(),
+    sexe: document.getElementById('fe-sexe').value,
+    date_naissance: document.getElementById('fe-naissance').value || null,
+    classe_id,
+    statut: document.getElementById('fe-statut').value,
+    code_eleve: document.getElementById('fe-code').value.trim() || ('ALM-'+Date.now()),
+    notes_dossier: document.getElementById('fe-notes').value,
+    documents: editingDocs
+  };
+  if(!payload.nom || !payload.prenom){ alert("Le nom et le prénom sont obligatoires."); return; }
+
+  let error;
+  if(editingEleveId){
+    ({ error } = await sb.from('eleves').update(payload).eq('id', editingEleveId));
+  } else {
+    ({ error } = await sb.from('eleves').insert(payload));
+  }
+  if(error){ alert("Erreur d'enregistrement : "+error.message); return; }
+  closeEleveModal();
+  await loadAll();
+  showView('eleves', document.querySelector('.side button[data-view="eleves"]'));
+}
+
+async function toggleArchiveEleve(){
+  if(!editingEleveId) return;
+  const e = ELEVES.find(x=>x.id===editingEleveId);
+  const statut = e.statut==='actif' ? 'archive' : 'actif';
+  const { error } = await sb.from('eleves').update({statut}).eq('id', editingEleveId);
+  if(error){ alert("Erreur : "+error.message); return; }
+  closeEleveModal();
+  await loadAll();
+}
+
+/* ============ PREINSCRIPTIONS TABLE ============ */
+function statusClass(s){
+  return {"Pré-inscription envoyée":"envoyee","En cours d'étude":"etude","Acceptée":"acceptee","Liste d'attente":"attente","Refusée":"refusee"}[s]||"envoyee";
+}
+function renderInscTable(){
+  const cycle = document.getElementById('if-cycle').value;
+  const statut = document.getElementById('if-statut').value;
+  const search = document.getElementById('if-search').value.toLowerCase();
+  const rows = INSCRIPTIONS.filter(s=>
+    (!cycle || s.cycle===cycle) &&
+    (!statut || s.statut===statut) &&
+    (!search || (s.nom+' '+s.prenom).toLowerCase().includes(search))
+  );
+  document.getElementById('insc-tbody').innerHTML = rows.map(s=>`
+    <tr>
+      <td style="font-family:var(--font-mono);font-size:12px;">${s.num}</td>
+      <td>${s.prenom} ${s.nom}</td>
+      <td>${s.cycle} · ${s.classe}</td>
+      <td>${s.parent}</td>
+      <td><span class="badge ${statusClass(s.statut)}">${s.statut}</span></td>
+      <td class="row-actions">
+        <button onclick="setInscStatus('${s.num}','Acceptée')">Accepter</button>
+        <button onclick="setInscStatus('${s.num}','Liste d\\'attente')">Attente</button>
+        <button onclick="setInscStatus('${s.num}','Refusée')">Refuser</button>
+        ${s.statut==='Acceptée' ? `<button onclick="convertToEleve('${s.num}')">→ Créer l'élève</button>` : ''}
+      </td>
+    </tr>`).join('') || `<tr><td colspan="6" class="empty-state">Aucune demande trouvée.</td></tr>`;
+}
+async function setInscStatus(num, statut){
+  const { error } = await sb.from('inscriptions').update({ statut }).eq('num', num);
+  if(error){ alert("Erreur : "+error.message); return; }
+  await loadAll();
+}
+async function convertToEleve(num){
+  const insc = INSCRIPTIONS.find(i=>i.num===num);
+  if(!insc) return;
+  const already = ELEVES.some(e=>e.inscription_id===insc.id || e.code_eleve===insc.num);
+  if(already){ alert("Cet élève a déjà un dossier."); return; }
+  const { error } = await sb.from('eleves').insert({
+    code_eleve: insc.num, nom: insc.nom, prenom: insc.prenom, sexe: insc.sexe,
+    statut: 'actif', inscription_id: insc.id
+  });
+  if(error){ alert("Erreur : "+error.message); return; }
+  alert("Élève créé. Pense à lui affecter une classe dans l'onglet Élèves.");
+  await loadAll();
+}
+
+/* ============ INIT ============ */
+checkExistingSession();
+</script>
+</body>
+</html>
