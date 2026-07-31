@@ -242,6 +242,33 @@ footer{background:#151934;color:#8B90B3;padding:48px 0 24px;font-size:13px;}
   .brand-text .sub{display:none;}
 }
 
+/* ===== MOBILE "PAGE BY PAGE" NAVIGATION (homepage) ===== */
+.page-dots{display:none;}
+@media(max-width:880px){
+  html{scroll-snap-type:y mandatory;}
+  .hero,#chiffres,#apropos,#etablissement,#admissions,#programmes,
+  #vie-scolaire,#actualites,#temoignages,#contact{
+    scroll-snap-align:start;
+    scroll-snap-stop:always;
+    min-height:100dvh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+  }
+  footer{scroll-snap-align:start;}
+  #chiffres{min-height:auto;padding:60px 0;}
+  .page-dots{
+    display:flex;flex-direction:column;gap:9px;
+    position:fixed;right:10px;top:50%;transform:translateY(-50%);
+    z-index:150;
+  }
+  .page-dots .dot{
+    width:8px;height:8px;border-radius:50%;border:none;padding:0;
+    background:rgba(30,34,51,.25);cursor:pointer;transition:.2s;
+  }
+  .page-dots .dot.active{background:var(--primary);transform:scale(1.4);}
+}
+
 #mobile-menu{display:none;position:fixed;inset:0;background:var(--primary-dark);z-index:100;padding:24px;flex-direction:column;}
 #mobile-menu.open{display:flex;}
 #mobile-menu a{color:#fff;font-size:17px;font-weight:600;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.12);text-decoration:none;}
@@ -565,6 +592,19 @@ tbody tr:hover{background:var(--paper);}
 </head>
 <body>
 
+<nav class="page-dots" id="page-dots" aria-label="Navigation rapide entre les sections">
+  <button class="dot" data-target="accueil" title="Accueil" aria-label="Accueil"></button>
+  <button class="dot" data-target="chiffres" title="Chiffres clés" aria-label="Chiffres clés"></button>
+  <button class="dot" data-target="apropos" title="À propos" aria-label="À propos"></button>
+  <button class="dot" data-target="etablissement" title="Établissement" aria-label="Établissement"></button>
+  <button class="dot" data-target="admissions" title="Admissions" aria-label="Admissions"></button>
+  <button class="dot" data-target="programmes" title="Programmes" aria-label="Programmes"></button>
+  <button class="dot" data-target="vie-scolaire" title="Vie scolaire" aria-label="Vie scolaire"></button>
+  <button class="dot" data-target="actualites" title="Actualités" aria-label="Actualités"></button>
+  <button class="dot" data-target="temoignages" title="Témoignages" aria-label="Témoignages"></button>
+  <button class="dot" data-target="contact" title="Contact" aria-label="Contact"></button>
+</nav>
+
 <div class="contact-ticker">
   <div class="ticker-track">
     <div class="ticker-group">
@@ -641,7 +681,7 @@ tbody tr:hover{background:var(--paper);}
   </div>
 </section>
 
-<div class="stats-band">
+<div class="stats-band" id="chiffres">
   <div class="wrap stats-grid">
     <div><div class="num">4</div><div class="lbl">Cycles, crèche à secondaire</div></div>
     <div><div class="num">15+</div><div class="lbl">Niveaux de classe</div></div>
@@ -777,7 +817,7 @@ tbody tr:hover{background:var(--paper);}
 </section>
 
 <!-- ===== TEMOIGNAGES ===== -->
-<section>
+<section id="temoignages">
   <div class="wrap">
     <div class="section-head">
       <div class="eyebrow">Témoignages</div>
@@ -872,6 +912,27 @@ function showProg(id,btn){
   document.getElementById(id).classList.add('active');
   btn.classList.add('active');
 }
+
+/* ===== PAGE DOTS (mobile "page by page" navigation) ===== */
+(function(){
+  const dots = Array.from(document.querySelectorAll('.page-dots .dot'));
+  if(!dots.length) return;
+  dots.forEach(d=>{
+    d.addEventListener('click', ()=>{
+      const el = document.getElementById(d.dataset.target);
+      if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+  const targets = dots.map(d=>document.getElementById(d.dataset.target)).filter(Boolean);
+  const setActive = id=>dots.forEach(d=>d.classList.toggle('active', d.dataset.target===id));
+  if('IntersectionObserver' in window){
+    const obs = new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{ if(entry.isIntersecting) setActive(entry.target.id); });
+    }, {threshold:0.5});
+    targets.forEach(t=>obs.observe(t));
+  }
+  if(targets[0]) setActive(targets[0].id);
+})();
 </script>
 
 <!-- ===== LOGIN MODAL ===== -->
