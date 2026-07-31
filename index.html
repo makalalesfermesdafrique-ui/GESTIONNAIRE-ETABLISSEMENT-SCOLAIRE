@@ -324,6 +324,46 @@ footer{background:#151934;color:#8B90B3;padding:48px 0 24px;font-size:13px;}
 .step-item.current .step-label{color:var(--ink);font-weight:600;}
 .step-item.done .step-label{color:var(--ink);}
 
+/* ---- Mobile "steps" trigger button + backdrop (drawer navigation) ---- */
+.mobile-steps-btn{display:none;}
+.stepper-backdrop{
+  display:none;position:fixed;inset:0;background:rgba(20,22,40,.5);z-index:190;
+}
+.stepper-backdrop.show{display:block;}
+.stepper-mobile-head{display:none;}
+
+@media(max-width:880px){
+  .mobile-steps-btn{
+    display:flex;align-items:center;justify-content:space-between;width:100%;
+    background:var(--panel);border:1.5px solid var(--border);border-radius:12px;
+    padding:13px 16px;font-size:13.5px;font-weight:600;color:var(--primary-dark);
+    cursor:pointer;margin-bottom:16px;box-shadow:var(--shadow);
+  }
+  .mobile-steps-btn .cnt{
+    font-family:var(--font-mono);font-size:11.5px;font-weight:700;color:#fff;
+    background:var(--primary);border-radius:999px;padding:3px 10px;
+  }
+  .stepper{
+    position:fixed;top:0;right:0;height:100%;width:82%;max-width:320px;
+    border-radius:0;box-shadow:-14px 0 34px -10px rgba(20,22,40,.35);
+    transform:translateX(100%);transition:transform .3s ease;
+    z-index:200;overflow-y:auto;display:block;padding:18px 16px 28px;
+  }
+  .stepper.open{transform:translateX(0);}
+  .stepper-title{display:none;}
+  .stepper-mobile-head{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border);
+  }
+  .stepper-mobile-head span{font-family:var(--font-display);font-size:16px;font-weight:600;color:var(--primary-dark);}
+  .stepper-close{
+    border:none;background:var(--paper);color:var(--ink-soft);width:30px;height:30px;
+    border-radius:50%;font-size:15px;cursor:pointer;flex-shrink:0;
+  }
+  .step-item{flex-direction:row;align-items:flex-start;min-width:0;padding:10px 4px;}
+  .step-item .line{display:block;}
+}
+
 .formwrap{flex:1;min-width:0;}
 .progress-track{height:6px;background:var(--border);border-radius:4px;overflow:hidden;margin-bottom:26px;}
 .progress-fill{height:100%;background:linear-gradient(90deg,var(--leaf),var(--primary));width:0%;transition:width .35s ease;}
@@ -467,11 +507,6 @@ tbody tr:hover{background:var(--paper);}
   .field-grid,.doc-grid,.pay-grid{grid-template-columns:1fr;}
   .stats-row{grid-template-columns:1fr 1fr;}
   .wizard{flex-direction:column;padding:0 16px 60px;}
-  .stepper{width:100%;position:static;display:flex;overflow-x:auto;gap:6px;padding:14px;}
-  .stepper-title{display:none;}
-  .step-item{flex-direction:column;align-items:center;min-width:64px;}
-  .step-item .line{display:none;}
-  .step-label{font-size:10.5px;text-align:center;padding-top:2px;}
   .panel{padding:24px 20px;}
   .wiz-topbar{padding:14px 16px;}
   .wiz-hero{padding:32px 16px 18px;}
@@ -893,7 +928,12 @@ function showProg(id,btn){
 
       <div class="wizard">
         <nav class="stepper" id="stepper"></nav>
+        <div class="stepper-backdrop" id="stepper-backdrop" onclick="closeStepperMobile()"></div>
         <div class="formwrap">
+          <button type="button" class="mobile-steps-btn" onclick="openStepperMobile()">
+            <span>📋 Voir toutes les étapes</span>
+            <span class="cnt" id="mobile-steps-count">1/14</span>
+          </button>
           <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
           <div class="panel">
             <div class="panel-head">
@@ -1065,7 +1105,12 @@ let data = {langues:[], options:[], guardians:[], docs:{}};
 /* ============ RENDER STEPPER ============ */
 function renderStepper(){
   const el = document.getElementById('stepper');
-  el.innerHTML = '<div class="stepper-title">Progression du dossier</div>' + STEPS.map((s,i)=>{
+  el.innerHTML =
+    `<div class="stepper-mobile-head">
+      <span>Étapes du dossier</span>
+      <button type="button" class="stepper-close" onclick="closeStepperMobile()">✕</button>
+    </div>` +
+    '<div class="stepper-title">Progression du dossier</div>' + STEPS.map((s,i)=>{
     const cls = i===current?'current':(i<current?'done':'');
     return `<div class="step-item ${cls}" onclick="goToStep(${i})">
       <div class="line"></div>
@@ -1074,9 +1119,27 @@ function renderStepper(){
     </div>`;
   }).join('');
   document.getElementById('progress-fill').style.width = (current/(STEPS.length-1)*100)+'%';
+  const counter = document.getElementById('mobile-steps-count');
+  if(counter) counter.textContent = (current+1)+'/'+STEPS.length;
 }
 
-function goToStep(i){ if(i<=current){ current=i; renderStep(); } }
+function goToStep(i){
+  if(i<=current){ current=i; renderStep(); }
+  closeStepperMobile();
+}
+
+function openStepperMobile(){
+  document.getElementById('stepper').classList.add('open');
+  document.getElementById('stepper-backdrop').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+function closeStepperMobile(){
+  const stepper = document.getElementById('stepper');
+  const backdrop = document.getElementById('stepper-backdrop');
+  if(stepper) stepper.classList.remove('open');
+  if(backdrop) backdrop.classList.remove('show');
+  document.body.style.overflow = '';
+}
 
 /* ============ FIELD RENDERERS ============ */
 function fieldHTML(f){
@@ -1496,4 +1559,3 @@ renderStep();
 
 </body>
 </html>
-
