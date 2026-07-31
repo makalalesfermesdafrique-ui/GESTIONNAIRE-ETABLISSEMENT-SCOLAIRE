@@ -1,1 +1,1499 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Groupe Scolaire AL MAGHREB — Crèche · Maternelle · Primaire · Secondaire</title>
+<meta name="description" content="Groupe Scolaire AL MAGHREB, Diamniadio — de la crèche à la Terminale. Admissions, programmes, vie scolaire et pré-inscription en ligne.">
+
+<link rel="icon" type="image/png" href="logo.png">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1E2233;
+  --ink-soft:#565B72;
+  --paper:#FAF9F5;
+  --panel:#FFFFFF;
+  --primary:#2E3A8C;
+  --primary-dark:#1B2360;
+  --primary-tint:#EBEDF7;
+  --leaf:#5E9B36;
+  --leaf-tint:#EAF3DE;
+  --gold:#DE9F31;
+  --gold-tint:#FBF0DC;
+  --error:#C1443C;
+  --error-tint:#FBEAE8;
+  --border:#E4E1D6;
+  --radius:14px;
+  --shadow:0 12px 32px -12px rgba(30,34,51,0.18);
+  --font-display:'Fraunces',serif;
+  --font-body:'Inter',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+html,body{margin:0;padding:0;}
+body{font-family:var(--font-body);background:var(--paper);color:var(--ink);-webkit-font-smoothing:antialiased;}
+img{max-width:100%;display:block;}
+a{color:inherit;}
+.wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
+section{padding:88px 0;}
+@media(max-width:640px){
+  .wrap{padding:0 20px;}
+  section{padding:56px 0;}
+}
+.eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--leaf);font-weight:600;}
+h1,h2,h3{font-family:var(--font-display);color:var(--primary-dark);margin:0;}
+h2{font-size:clamp(26px,3.4vw,36px);font-weight:600;letter-spacing:-.01em;}
+.section-head{max-width:640px;margin-bottom:44px;}
+.section-head p{color:var(--ink-soft);font-size:15.5px;margin-top:10px;line-height:1.6;}
+.btn{display:inline-flex;align-items:center;gap:8px;border:none;border-radius:9px;padding:13px 24px;font-size:14.5px;font-weight:600;cursor:pointer;text-decoration:none;transition:.15s;}
+.btn-primary{background:var(--primary);color:#fff;}
+.btn-primary:hover{background:var(--primary-dark);}
+.btn-gold{background:var(--gold);color:#fff;}
+.btn-gold:hover{background:#C68A22;}
+.btn-ghost{background:#fff;color:var(--primary-dark);border:1.5px solid var(--border);}
+.btn-ghost:hover{border-color:var(--primary);color:var(--primary);}
+
+/* ===== TICKER ===== */
+.contact-ticker{background:var(--leaf);color:#fff;overflow:hidden;position:sticky;top:0;z-index:60;height:34px;display:flex;align-items:center;}
+.ticker-track{display:flex;align-items:center;white-space:nowrap;animation:ticker-scroll 26s linear infinite;}
+.contact-ticker:hover .ticker-track{animation-play-state:paused;}
+.ticker-group{display:flex;align-items:center;flex-shrink:0;}
+.ticker-track span.item{display:inline-flex;align-items:center;gap:6px;padding:0 26px;font-size:12.5px;font-weight:600;}
+@keyframes ticker-scroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+/* ===== HEADER / NAV ===== */
+.topbar{position:sticky;top:34px;z-index:59;background:rgba(250,249,245,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:14px 32px;max-width:1180px;margin:0 auto;}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.brand-mark{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;}
+.brand-mark img{width:100%;height:100%;object-fit:contain;}
+.brand-text .name{font-family:var(--font-display);font-weight:600;font-size:16px;line-height:1.15;color:var(--primary-dark);}
+.brand-text .sub{font-size:10.5px;color:var(--ink-soft);letter-spacing:.04em;text-transform:uppercase;}
+.nav-links{display:flex;gap:26px;list-style:none;margin:0;padding:0;}
+.nav-links a{font-size:13.5px;font-weight:600;color:var(--ink-soft);text-decoration:none;}
+.nav-links a:hover{color:var(--primary);}
+.nav-cta{display:flex;gap:10px;align-items:center;}
+.nav-toggle{display:none;background:none;border:none;font-size:22px;cursor:pointer;color:var(--primary-dark);}
+@media(max-width:980px){
+  .nav-links{display:none;}
+  .nav-toggle{display:block;}
+}
+
+/* ===== HERO ===== */
+.hero{position:relative;overflow:hidden;padding:76px 0 60px;background:
+  radial-gradient(circle at 85% 20%, var(--leaf-tint) 0%, transparent 45%),
+  radial-gradient(circle at 10% 90%, var(--primary-tint) 0%, transparent 50%);}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center;}
+.hero h1{font-size:clamp(34px,5vw,54px);line-height:1.06;letter-spacing:-.015em;margin:14px 0 18px;}
+.hero h1 em{font-style:normal;color:var(--leaf);}
+.hero p.lead{color:var(--ink-soft);font-size:16.5px;line-height:1.65;max-width:520px;}
+.hero-actions{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap;}
+.hero-actions .btn{flex:1 1 auto;justify-content:center;}
+.hero-art{position:relative;aspect-ratio:1/1;border-radius:24px;background:linear-gradient(160deg,var(--primary) 0%,var(--primary-dark) 100%);overflow:hidden;box-shadow:var(--shadow);}
+.zellige{position:absolute;inset:0;opacity:.5;background-image:
+  repeating-linear-gradient(45deg, rgba(255,255,255,.07) 0 2px, transparent 2px 26px),
+  repeating-linear-gradient(-45deg, rgba(255,255,255,.07) 0 2px, transparent 2px 26px);}
+.hero-art .badge-float{position:absolute;bottom:20px;left:20px;right:20px;background:rgba(255,255,255,.96);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow);}
+.hero-art .badge-float .num{font-family:var(--font-display);font-size:26px;color:var(--primary-dark);font-weight:600;}
+.hero-art .badge-float .lbl{font-size:12px;color:var(--ink-soft);}
+
+.stats-band{background:var(--primary-dark);color:#fff;padding:34px 0;}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;text-align:center;}
+.stats-grid .num{font-family:var(--font-display);font-size:32px;font-weight:600;color:var(--gold);}
+.stats-grid .lbl{font-size:12.5px;color:#C7CBE8;letter-spacing:.03em;text-transform:uppercase;margin-top:4px;}
+@media(max-width:820px){.stats-grid{grid-template-columns:1fr 1fr;}}
+
+/* ===== ABOUT ===== */
+.about-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:start;}
+.about-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow);}
+.about-card + .about-card{margin-top:16px;}
+.about-card h3{font-size:17px;margin-bottom:8px;}
+.about-card p{color:var(--ink-soft);font-size:14px;line-height:1.6;margin:0;}
+.values-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px;}
+.value-pill{border:1.5px solid var(--border);border-radius:12px;padding:16px;background:#fff;}
+.value-pill .ico{font-size:20px;}
+.value-pill .t{font-weight:700;font-size:13.5px;margin:8px 0 4px;color:var(--primary-dark);}
+.value-pill .d{font-size:12.5px;color:var(--ink-soft);line-height:1.5;}
+
+/* ===== CYCLES / ETABLISSEMENT ===== */
+.cycles-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+.cycle-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:24px 20px;box-shadow:var(--shadow);transition:.2s;}
+.cycle-card:hover{transform:translateY(-4px);}
+.cycle-card .ico{width:46px;height:46px;border-radius:12px;background:var(--leaf-tint);color:var(--leaf);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:14px;}
+.cycle-card h3{font-size:16.5px;margin-bottom:6px;}
+.cycle-card p{color:var(--ink-soft);font-size:13px;line-height:1.5;margin:0 0 10px;}
+.cycle-card .age{font-family:var(--font-mono);font-size:11.5px;color:var(--gold);font-weight:600;}
+@media(max-width:980px){.cycles-grid,.about-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:640px){.cycles-grid,.about-grid,.values-grid{grid-template-columns:1fr;}}
+
+/* ===== ADMISSIONS ===== */
+.admissions{background:var(--primary-tint);}
+.adm-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;}
+.adm-steps{list-style:none;margin:0;padding:0;}
+.adm-steps li{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid rgba(46,58,140,.12);}
+.adm-steps li:last-child{border-bottom:none;}
+.adm-steps .n{width:30px;height:30px;border-radius:50%;background:var(--primary);color:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:12.5px;font-weight:700;}
+.adm-steps .tx b{display:block;font-size:14.5px;color:var(--ink);}
+.adm-steps .tx span{font-size:12.5px;color:var(--ink-soft);}
+.adm-card{background:#fff;border-radius:var(--radius);padding:32px;box-shadow:var(--shadow);}
+.adm-card h3{font-size:19px;margin-bottom:8px;}
+.adm-card p{color:var(--ink-soft);font-size:13.5px;line-height:1.6;}
+.adm-card .btn{width:100%;justify-content:center;margin-top:16px;}
+.adm-dates{display:flex;justify-content:space-between;font-size:12.5px;color:var(--ink-soft);margin-top:14px;padding-top:14px;border-top:1px dashed var(--border);}
+@media(max-width:820px){.adm-grid{grid-template-columns:1fr;}}
+
+/* ===== PROGRAMMES ===== */
+.prog-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px;}
+.prog-tab{border:1.5px solid var(--border);background:#fff;border-radius:999px;padding:8px 18px;font-size:13px;font-weight:600;color:var(--ink-soft);cursor:pointer;}
+.prog-tab.active{background:var(--primary);border-color:var(--primary);color:#fff;}
+.prog-panel{display:none;}
+.prog-panel.active{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;}
+.class-chip{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px 10px;text-align:center;font-size:13.5px;font-weight:600;color:var(--primary-dark);}
+
+/* ===== VIE SCOLAIRE / ACTIVITES ===== */
+.feat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+.feat-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:20px;}
+.feat-card .ico{font-size:22px;margin-bottom:10px;}
+.feat-card h3{font-size:14.5px;margin-bottom:4px;}
+.feat-card p{font-size:12.5px;color:var(--ink-soft);margin:0;line-height:1.5;}
+@media(max-width:980px){.feat-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:640px){.feat-grid{grid-template-columns:1fr;}}
+
+/* ===== ACTUALITES ===== */
+.news-strip{background:var(--paper);}
+.news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+.news-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);}
+.news-thumb{height:150px;background:linear-gradient(135deg,var(--leaf-tint),var(--primary-tint));display:flex;align-items:center;justify-content:center;font-size:30px;}
+.news-body{padding:18px 20px;}
+.news-date{font-family:var(--font-mono);font-size:11px;color:var(--gold);font-weight:600;}
+.news-body h3{font-size:15.5px;margin:8px 0 6px;}
+.news-body p{font-size:12.5px;color:var(--ink-soft);margin:0;line-height:1.5;}
+@media(max-width:820px){.news-grid{grid-template-columns:1fr;}}
+
+/* ===== TEMOIGNAGES ===== */
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.testi-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:24px;}
+.testi-card p{font-size:13.5px;color:var(--ink);line-height:1.6;font-style:italic;}
+.testi-who{display:flex;align-items:center;gap:10px;margin-top:14px;}
+.testi-who .av{width:36px;height:36px;border-radius:50%;background:var(--gold-tint);color:#8A5E14;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;}
+.testi-who b{font-size:13px;display:block;}
+.testi-who span{font-size:11.5px;color:var(--ink-soft);}
+@media(max-width:820px){.testi-grid{grid-template-columns:1fr;}}
+
+/* ===== CONTACT ===== */
+.contact-band{background:var(--primary-dark);color:#fff;}
+.contact-band h2{color:#fff;}
+.contact-band .section-head p{color:#B9BEDE;}
+.contact-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:48px;}
+.contact-info-list{list-style:none;margin:0;padding:0;}
+.contact-info-list li{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.12);}
+.contact-info-list .ico{width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.contact-info-list b{display:block;font-size:13.5px;}
+.contact-info-list span{font-size:12.5px;color:#B9BEDE;}
+.map-box{border-radius:var(--radius);overflow:hidden;border:1px solid rgba(255,255,255,.15);height:220px;margin-top:20px;}
+.map-box iframe{width:100%;height:100%;border:0;}
+.cform{background:#fff;border-radius:var(--radius);padding:28px;color:var(--ink);}
+.cform .row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.cform label{font-size:12.5px;font-weight:600;display:block;margin-bottom:5px;color:var(--ink);}
+.cform input,.cform select,.cform textarea{width:100%;border:1.5px solid var(--border);border-radius:9px;padding:10px 12px;font-size:13.5px;font-family:inherit;}
+.cform textarea{min-height:100px;resize:vertical;}
+.cform .btn{width:100%;justify-content:center;margin-top:6px;}
+@media(max-width:820px){.contact-grid{grid-template-columns:1fr;}.cform .row{grid-template-columns:1fr;}}
+
+/* ===== FOOTER ===== */
+footer{background:#151934;color:#8B90B3;padding:48px 0 24px;font-size:13px;}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px;padding-bottom:32px;border-bottom:1px solid rgba(255,255,255,.08);}
+.foot-grid h4{color:#fff;font-size:13px;text-transform:uppercase;letter-spacing:.05em;margin:0 0 14px;}
+.foot-grid ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:9px;}
+.foot-grid a{color:#8B90B3;text-decoration:none;font-size:13px;}
+.foot-grid a:hover{color:#fff;}
+.foot-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:20px;flex-wrap:wrap;gap:12px;}
+.foot-social{display:flex;gap:10px;}
+.foot-social a{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;}
+@media(max-width:820px){.foot-grid{grid-template-columns:1fr 1fr;}}
+
+@media(max-width:980px){
+  .hero-grid{grid-template-columns:1fr;gap:36px;}
+  .hero-art{max-width:420px;margin:0 auto;width:100%;}
+  .nav{padding:14px 20px;}
+}
+@media(max-width:640px){
+  .ticker-track span.item{padding:0 16px;font-size:11.5px;}
+  .hero{padding:48px 0 40px;}
+  .hero-actions{flex-direction:column;}
+  .hero-actions .btn{width:100%;}
+  .stats-grid{grid-template-columns:1fr 1fr;gap:14px;}
+  .stats-grid .num{font-size:26px;}
+  .adm-card{padding:24px 20px;}
+  .cform{padding:20px;}
+  .foot-grid{grid-template-columns:1fr;gap:24px;}
+  .foot-bottom{flex-direction:column;align-items:flex-start;}
+}
+@media(max-width:420px){
+  .stats-grid{grid-template-columns:1fr;}
+  .brand-text .sub{display:none;}
+}
+
+#mobile-menu{display:none;position:fixed;inset:0;background:var(--primary-dark);z-index:100;padding:24px;flex-direction:column;}
+#mobile-menu.open{display:flex;}
+#mobile-menu a{color:#fff;font-size:17px;font-weight:600;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.12);text-decoration:none;}
+#mobile-menu .close-x{align-self:flex-end;background:none;border:none;color:#fff;font-size:26px;cursor:pointer;}
+
+/* ===== CONTACT TICKER (wizard app override, same rules kept) ===== */
+
+/* ===== TOP BAR (wizard app) ===== */
+.wiz-topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 32px;background:var(--primary-dark);color:#fff;
+  position:sticky;top:0;z-index:50;
+  flex-wrap:wrap;gap:12px;
+}
+@media(max-width:880px){
+  .wiz-topbar{top:0;}
+}
+.mode-switch{display:flex;gap:2px;background:rgba(255,255,255,.08);padding:3px;border-radius:10px;flex-wrap:wrap;}
+.mode-switch button{
+  border:none;background:transparent;color:#C7CBE8;padding:8px 16px;border-radius:8px;
+  font-size:13.5px;font-weight:600;cursor:pointer;transition:.2s;white-space:nowrap;
+}
+.mode-switch button.active{background:#fff;color:var(--primary-dark);}
+@media(max-width:560px){
+  .wiz-topbar{padding:12px 14px;justify-content:center;}
+  .wiz-topbar .brand{width:100%;justify-content:center;}
+  .mode-switch{width:100%;justify-content:center;}
+  .mode-switch button{flex:1;padding:8px 10px;font-size:12.5px;}
+  #btn-logout{flex:0 0 auto;}
+}
+
+/* ===== LAYOUT (wizard app) ===== */
+.app{display:flex;max-width:1240px;margin:0 auto;min-height:calc(100vh - 72px);}
+.view{display:none;}
+.view.active{display:block;width:100%;}
+
+/* ===== HERO (wizard) ===== */
+.wiz-hero{
+  padding:52px 32px 28px;text-align:center;
+}
+.wiz-hero .eyebrow{
+  font-family:var(--font-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--leaf);font-weight:600;
+}
+.wiz-hero h1{
+  font-family:var(--font-display);font-weight:600;font-size:clamp(28px,4vw,42px);
+  margin:10px 0 8px;color:var(--primary-dark);letter-spacing:-.01em;
+}
+.wiz-hero p{color:var(--ink-soft);font-size:15.5px;max-width:560px;margin:0 auto;}
+
+/* ===== WIZARD LAYOUT ===== */
+.wizard{display:flex;gap:36px;padding:0 32px 80px;align-items:flex-start;}
+.stepper{
+  width:270px;flex-shrink:0;position:sticky;top:88px;
+  background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);
+  padding:22px 18px;box-shadow:var(--shadow);
+}
+.stepper-title{
+  font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-soft);
+  font-weight:700;margin:0 0 14px 4px;
+}
+.step-item{
+  display:flex;gap:12px;padding:9px 4px;position:relative;cursor:pointer;
+}
+.step-item .line{
+  position:absolute;left:15px;top:34px;bottom:-9px;width:2px;background:var(--border);
+}
+.step-item:last-child .line{display:none;}
+.step-item.done .line{background:var(--leaf);}
+.step-num{
+  width:30px;height:30px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-mono);font-size:12px;font-weight:600;
+  background:var(--paper);border:2px solid var(--border);color:var(--ink-soft);
+  transition:.25s;z-index:1;
+}
+.step-item.current .step-num{border-color:var(--primary);color:var(--primary);background:var(--primary-tint);}
+.step-item.done .step-num{border-color:var(--leaf);background:var(--leaf);color:#fff;}
+.step-label{padding-top:5px;font-size:13.5px;color:var(--ink-soft);line-height:1.3;}
+.step-item.current .step-label{color:var(--ink);font-weight:600;}
+.step-item.done .step-label{color:var(--ink);}
+
+.formwrap{flex:1;min-width:0;}
+.progress-track{height:6px;background:var(--border);border-radius:4px;overflow:hidden;margin-bottom:26px;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--leaf),var(--primary));width:0%;transition:width .35s ease;}
+
+.panel{
+  background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);
+  padding:36px 38px;box-shadow:var(--shadow);
+}
+.panel-head{margin-bottom:24px;}
+.panel-eyebrow{font-family:var(--font-mono);font-size:12px;color:var(--leaf);font-weight:600;}
+.panel-head h2{font-family:var(--font-display);font-size:24px;font-weight:600;margin:4px 0 0;color:var(--primary-dark);}
+
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px 20px;}
+.field{display:flex;flex-direction:column;gap:6px;}
+.field.full{grid-column:1/-1;}
+.field label{font-size:13px;font-weight:600;color:var(--ink);}
+.field label .opt{font-weight:400;color:var(--ink-soft);font-size:12px;}
+.field input[type=text],.field input[type=date],.field input[type=email],
+.field input[type=tel],.field select,.field textarea{
+  border:1.5px solid var(--border);border-radius:9px;padding:10px 12px;font-size:14px;
+  font-family:inherit;background:#fff;color:var(--ink);transition:.15s;
+}
+.field textarea{resize:vertical;min-height:80px;}
+.field input:focus,.field select:focus,.field textarea:focus{
+  outline:none;border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-tint);
+}
+.field.error input,.field.error select,.field.error textarea{border-color:var(--error);}
+.field-error-msg{font-size:12px;color:var(--error);display:none;}
+.field.error .field-error-msg{display:block;}
+
+.radio-row,.check-row{display:flex;flex-wrap:wrap;gap:8px;}
+.pill-option{
+  border:1.5px solid var(--border);border-radius:999px;padding:8px 16px;font-size:13.5px;
+  cursor:pointer;background:#fff;color:var(--ink-soft);transition:.15s;user-select:none;
+}
+.pill-option input{display:none;}
+.pill-option.checked{border-color:var(--primary);background:var(--primary-tint);color:var(--primary-dark);font-weight:600;}
+
+.upload-box{
+  border:1.5px dashed var(--border);border-radius:10px;padding:16px;text-align:center;
+  cursor:pointer;background:var(--paper);transition:.15s;font-size:13px;color:var(--ink-soft);
+}
+.upload-box:hover{border-color:var(--primary);}
+.upload-box.filled{border-style:solid;border-color:var(--leaf);background:var(--leaf-tint);color:var(--ink);}
+.upload-box input{display:none;}
+.upload-box .fname{font-weight:600;font-size:12.5px;margin-top:4px;word-break:break-all;}
+
+.photo-upload{
+  width:112px;height:112px;border-radius:50%;border:2px dashed var(--border);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;
+  background:var(--paper);flex-shrink:0;position:relative;
+}
+.photo-upload img{width:100%;height:100%;object-fit:cover;}
+.photo-upload span{font-size:11px;color:var(--ink-soft);text-align:center;padding:0 8px;}
+.photo-upload input{display:none;}
+
+.doc-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+
+.guardian-card{
+  border:1.5px solid var(--border);border-radius:10px;padding:16px;margin-bottom:12px;position:relative;
+}
+.guardian-card .rm{
+  position:absolute;top:10px;right:10px;background:var(--error-tint);color:var(--error);
+  border:none;border-radius:6px;padding:4px 8px;font-size:11px;font-weight:600;cursor:pointer;
+}
+.add-guardian{
+  border:1.5px dashed var(--primary);color:var(--primary);background:var(--primary-tint);
+  border-radius:9px;padding:10px;font-size:13.5px;font-weight:600;cursor:pointer;width:100%;
+}
+
+.pay-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.pay-card{border:1.5px solid var(--border);border-radius:10px;padding:14px;cursor:pointer;display:flex;align-items:center;gap:10px;transition:.15s;}
+.pay-card.checked{border-color:var(--primary);background:var(--primary-tint);}
+.pay-card input{display:none;}
+.pay-card .ico{font-size:20px;}
+.pay-card .name{font-weight:600;font-size:13.5px;}
+
+.decl-row{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--border);}
+.decl-row:last-child{border-bottom:none;}
+.decl-row input{margin-top:3px;}
+.decl-row label{font-size:13.5px;color:var(--ink);}
+
+canvas.sigpad{border:1.5px solid var(--border);border-radius:10px;background:#fff;width:100%;height:150px;touch-action:none;cursor:crosshair;}
+.sig-tools{display:flex;gap:10px;margin-top:8px;}
+.sig-tools button{border:1px solid var(--border);background:#fff;border-radius:7px;padding:6px 12px;font-size:12.5px;cursor:pointer;color:var(--ink-soft);}
+
+.nav-row{display:flex;justify-content:space-between;margin-top:28px;}
+
+/* ===== CONFIRMATION ===== */
+.confirm-wrap{max-width:560px;margin:60px auto;text-align:center;padding:0 24px;}
+.confirm-badge{
+  width:76px;height:76px;border-radius:50%;background:var(--leaf-tint);color:var(--leaf);
+  display:flex;align-items:center;justify-content:center;font-size:34px;margin:0 auto 20px;
+}
+.confirm-wrap h2{font-family:var(--font-display);font-size:26px;color:var(--primary-dark);margin:0 0 8px;}
+.dossier-num{
+  font-family:var(--font-mono);font-size:20px;font-weight:600;color:var(--primary);
+  background:var(--primary-tint);border-radius:10px;padding:12px 20px;display:inline-block;margin:16px 0;
+  letter-spacing:.03em;
+}
+.confirm-status{
+  display:inline-block;background:var(--gold-tint);color:#8A5E14;font-size:12.5px;font-weight:700;
+  padding:6px 14px;border-radius:999px;margin-top:6px;text-transform:uppercase;letter-spacing:.04em;
+}
+
+/* ===== ADMIN ===== */
+.admin-wrap{padding:28px 32px 60px;}
+.admin-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:24px;flex-wrap:wrap;gap:14px;}
+.admin-head h1{font-family:var(--font-display);font-size:26px;color:var(--primary-dark);margin:0;}
+.admin-head p{color:var(--ink-soft);font-size:13.5px;margin:4px 0 0;}
+.stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:24px;}
+.stat-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px 18px;}
+.stat-card .num{font-family:var(--font-mono);font-size:24px;font-weight:600;color:var(--primary);}
+.stat-card .lbl{font-size:11.5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;margin-top:2px;}
+.filters{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
+.filters select,.filters input{border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;font-size:13px;font-family:inherit;background:#fff;}
+.table-wrap{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+table{width:100%;min-width:720px;border-collapse:collapse;font-size:13.5px;}
+thead th{
+  text-align:left;padding:12px 16px;background:var(--paper);color:var(--ink-soft);
+  font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;font-weight:700;border-bottom:1px solid var(--border);
+}
+tbody td{padding:12px 16px;border-bottom:1px solid var(--border);}
+tbody tr:last-child td{border-bottom:none;}
+tbody tr:hover{background:var(--paper);}
+.badge{padding:4px 10px;border-radius:999px;font-size:11.5px;font-weight:700;white-space:nowrap;}
+.badge.envoyee{background:var(--primary-tint);color:var(--primary);}
+.badge.etude{background:var(--gold-tint);color:#8A5E14;}
+.badge.acceptee{background:var(--leaf-tint);color:var(--leaf);}
+.badge.attente{background:#F0E7FB;color:#6A3FA0;}
+.badge.refusee{background:var(--error-tint);color:var(--error);}
+.row-actions{display:flex;gap:6px;}
+.row-actions button{border:1px solid var(--border);background:#fff;border-radius:6px;padding:5px 9px;font-size:11.5px;cursor:pointer;}
+.row-actions button:hover{border-color:var(--primary);color:var(--primary);}
+.export-row{display:flex;gap:10px;margin-top:16px;}
+
+@media(max-width:980px){
+  .stats-row{grid-template-columns:repeat(3,1fr);}
+}
+@media(max-width:880px){
+  .field-grid,.doc-grid,.pay-grid{grid-template-columns:1fr;}
+  .stats-row{grid-template-columns:1fr 1fr;}
+  .wizard{flex-direction:column;padding:0 16px 60px;}
+  .stepper{width:100%;position:static;display:flex;overflow-x:auto;gap:6px;padding:14px;}
+  .stepper-title{display:none;}
+  .step-item{flex-direction:column;align-items:center;min-width:64px;}
+  .step-item .line{display:none;}
+  .step-label{font-size:10.5px;text-align:center;padding-top:2px;}
+  .panel{padding:24px 20px;}
+  .wiz-topbar{padding:14px 16px;}
+  .wiz-hero{padding:32px 16px 18px;}
+  .admin-wrap{padding:20px 16px 40px;}
+  .admin-head{flex-direction:column;align-items:flex-start;}
+  .export-row{width:100%;}
+  .export-row .btn{flex:1;}
+  .filters{flex-direction:column;}
+  .filters select,.filters input{width:100%;}
+}
+@media(max-width:480px){
+  .stats-row{grid-template-columns:1fr;}
+  .radio-row,.check-row{gap:6px;}
+  .pill-option{padding:7px 12px;font-size:12.5px;}
+  .photo-upload{width:90px;height:90px;}
+  .confirm-wrap{margin:36px auto;}
+  .nav-row{flex-direction:column-reverse;gap:10px;}
+  .nav-row .btn{width:100%;justify-content:center;}
+}
+
+
+/* ===== APP OVERLAY (Pré-inscription / Espace parent / Administration) ===== */
+.app-overlay{
+  position:fixed;inset:0;background:var(--paper);z-index:300;
+  overflow-y:auto;display:none;
+}
+.overlay-close{
+  position:sticky;top:12px;left:calc(100% - 130px);
+  background:var(--primary-dark);color:#fff;border:none;border-radius:999px;
+  padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer;z-index:310;
+}
+.overlay-close:hover{background:var(--primary);}
+@media(max-width:560px){
+  .overlay-close{left:calc(100% - 96px);top:8px;padding:7px 14px;font-size:12px;}
+}
+
+/* ===== LOGIN MODAL ===== */
+.login-modal-bg{position:fixed;inset:0;background:rgba(20,22,40,.55);z-index:400;display:none;align-items:center;justify-content:center;padding:20px;}
+.login-modal{width:100%;max-width:380px;background:#fff;border-radius:18px;box-shadow:var(--shadow);padding:30px 28px;}
+@media(max-width:420px){
+  .login-modal{padding:22px 18px;}
+}
+.login-modal h3{font-family:var(--font-display);font-size:20px;color:var(--primary-dark);margin:0 0 4px;}
+.login-modal .lead{font-size:13px;color:var(--ink-soft);margin:0 0 20px;}
+.login-modal label{font-size:12.5px;font-weight:600;display:block;margin-bottom:6px;}
+.login-modal input{width:100%;border:1.5px solid var(--border);border-radius:9px;padding:10px 12px;font-size:14px;font-family:inherit;margin-bottom:14px;}
+.login-modal .msg{font-size:12.5px;border-radius:8px;padding:9px 11px;margin-bottom:14px;display:none;}
+.login-modal .msg.show{display:block;background:#FBEAEA;color:#C0392B;}
+.login-modal .setup-note{margin-top:16px;font-size:11px;color:var(--ink-soft);background:#FBF0DC;border:1px dashed #E3C078;border-radius:9px;padding:9px 11px;line-height:1.5;}
+.login-modal .row-btns{display:flex;gap:8px;margin-top:4px;}
+.login-modal .row-btns button{flex:1;}
+.login-modal .btn-cancel{background:#F1F0EA;color:var(--ink-soft);}
+.login-modal .btn-cancel:hover{background:#E4E1D6;}
+
+</style>
+</head>
+<body>
+
+<div class="contact-ticker">
+  <div class="ticker-track">
+    <div class="ticker-group">
+      <span class="item">📍 Adresse : Diamniadio, Cité Port 1 — Sénégal</span>
+      <span class="item">📞 Tél : 77 441 16 33</span>
+      <span class="item">✉️ Email : makpape@gmail.com</span>
+      <span class="item">🕐 Lun – Ven : 8h00 – 17h00</span>
+    </div>
+    <div class="ticker-group" aria-hidden="true">
+      <span class="item">📍 Adresse : Diamniadio, Cité Port 1 — Sénégal</span>
+      <span class="item">📞 Tél : 77 441 16 33</span>
+      <span class="item">✉️ Email : makpape@gmail.com</span>
+      <span class="item">🕐 Lun – Ven : 8h00 – 17h00</span>
+    </div>
+  </div>
+</div>
+
+<header class="topbar">
+  <nav class="nav">
+    <a href="#accueil" class="brand">
+      <div class="brand-mark"><img src="logo.png" alt="Logo AL MAGHREB"></div>
+      <div class="brand-text">
+        <div class="name">Groupe Scolaire AL MAGHREB</div>
+        <div class="sub">Crèche · Maternelle · Primaire · Secondaire</div>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#apropos">À propos</a></li>
+      <li><a href="#etablissement">Établissement</a></li>
+      <li><a href="#admissions">Admissions</a></li>
+      <li><a href="#programmes">Programmes</a></li>
+      <li><a href="#vie-scolaire">Vie scolaire</a></li>
+      <li><a href="#actualites">Actualités</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="javascript:void(0)" onclick="openApp('parent')" class="btn btn-primary">Pré-inscription</a>
+      <button class="nav-toggle" onclick="document.getElementById('mobile-menu').classList.add('open')">☰</button>
+    </div>
+  </nav>
+</header>
+
+<div id="mobile-menu">
+  <button class="close-x" onclick="document.getElementById('mobile-menu').classList.remove('open')">×</button>
+  <a href="#apropos" onclick="closeMenu()">À propos</a>
+  <a href="#etablissement" onclick="closeMenu()">Établissement</a>
+  <a href="#admissions" onclick="closeMenu()">Admissions</a>
+  <a href="#programmes" onclick="closeMenu()">Programmes</a>
+  <a href="#vie-scolaire" onclick="closeMenu()">Vie scolaire</a>
+  <a href="#actualites" onclick="closeMenu()">Actualités</a>
+  <a href="#contact" onclick="closeMenu()">Contact</a>
+  <a href="javascript:void(0)" onclick="openApp('parent');closeMenu()">Pré-inscription en ligne →</a>
+</div>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="accueil" style="padding-top:56px;">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Admissions 2026 ouvertes</div>
+      <h1>Une école qui accompagne votre enfant, <em>de la crèche à la Terminale</em>.</h1>
+      <p class="lead">Le Groupe Scolaire AL MAGHREB, à Diamniadio, offre un parcours éducatif complet et exigeant, dans un cadre bienveillant et moderne, préparant chaque élève aux examens nationaux et à la vie.</p>
+      <div class="hero-actions">
+        <a href="javascript:void(0)" onclick="openApp('parent')" class="btn btn-gold">Faire une pré-inscription en ligne</a>
+        <a href="#etablissement" class="btn btn-ghost">Découvrir l'établissement</a>
+      </div>
+    </div>
+    <div class="hero-art">
+      <div class="zellige"></div>
+      <div class="badge-float">
+        <div class="num">100% en ligne</div>
+        <div class="lbl">Dossier de pré-inscription, suivi et paiement</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="stats-band">
+  <div class="wrap stats-grid">
+    <div><div class="num">4</div><div class="lbl">Cycles, crèche à secondaire</div></div>
+    <div><div class="num">15+</div><div class="lbl">Niveaux de classe</div></div>
+    <div><div class="num">3</div><div class="lbl">Langues enseignées</div></div>
+    <div><div class="num">100%</div><div class="lbl">Dossier en ligne</div></div>
+  </div>
+</div>
+
+<!-- ===== A PROPOS ===== -->
+<section id="apropos">
+  <div class="wrap about-grid">
+    <div>
+      <div class="about-card">
+        <h3>Mot du Directeur</h3>
+        <p>« Notre mission est d'offrir à chaque enfant un environnement stimulant où rigueur académique et épanouissement personnel avancent ensemble, de la crèche à la Terminale. »</p>
+      </div>
+      <div class="about-card">
+        <h3>Notre vision</h3>
+        <p>Former des élèves autonomes, bilingues et confiants, capables de réussir les examens nationaux et de s'épanouir dans l'enseignement supérieur.</p>
+      </div>
+    </div>
+    <div>
+      <div class="eyebrow">Qui sommes-nous</div>
+      <h2 style="margin:8px 0 16px;">Nos valeurs</h2>
+      <div class="values-grid">
+        <div class="value-pill"><div class="ico">🎯</div><div class="t">Excellence</div><div class="d">Exigence académique à chaque niveau, du préscolaire à la Terminale.</div></div>
+        <div class="value-pill"><div class="ico">🤝</div><div class="t">Bienveillance</div><div class="d">Un encadrement attentif, à l'écoute de chaque enfant et de sa famille.</div></div>
+        <div class="value-pill"><div class="ico">🌍</div><div class="t">Ouverture</div><div class="d">Français, Anglais, Arabe — et une ouverture sur le monde.</div></div>
+        <div class="value-pill"><div class="ico">💡</div><div class="t">Innovation</div><div class="d">Informatique, robotique et outils numériques dès le plus jeune âge.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ETABLISSEMENT ===== -->
+<section id="etablissement" style="background:var(--panel);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Notre établissement</div>
+      <h2>Un parcours continu, cycle après cycle</h2>
+      <p>Chaque cycle dispose d'un encadrement et d'un programme adaptés à l'âge de l'enfant.</p>
+    </div>
+    <div class="cycles-grid">
+      <div class="cycle-card"><div class="ico">🍼</div><h3>Crèche</h3><p>Premiers apprentissages dans un cadre sécurisant et chaleureux.</p><div class="age">2 – 3 ans</div></div>
+      <div class="cycle-card"><div class="ico">🎨</div><h3>Maternelle</h3><p>Éveil, langage et socialisation à travers le jeu et la découverte.</p><div class="age">3 – 5 ans</div></div>
+      <div class="cycle-card"><div class="ico">📘</div><h3>Primaire</h3><p>De la CI au CM2 : bases solides en lecture, calcul et méthode.</p><div class="age">6 – 11 ans</div></div>
+      <div class="cycle-card"><div class="ico">🎓</div><h3>Secondaire</h3><p>Du collège à la Terminale, préparation aux examens nationaux.</p><div class="age">12 – 18 ans</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ADMISSIONS ===== -->
+<section id="admissions" class="admissions">
+  <div class="wrap adm-grid">
+    <div>
+      <div class="eyebrow">Admissions</div>
+      <h2 style="margin:8px 0 20px;">Comment inscrire votre enfant</h2>
+      <ul class="adm-steps">
+        <li><div class="n">1</div><div class="tx"><b>Pré-inscription en ligne</b><span>Remplissez le formulaire avec les informations de l'élève et des parents.</span></div></li>
+        <li><div class="n">2</div><div class="tx"><b>Dépôt des pièces</b><span>Joignez les documents demandés (acte de naissance, certificat, photos...).</span></div></li>
+        <li><div class="n">3</div><div class="tx"><b>Étude du dossier</b><span>L'administration examine la demande et vous contacte sous quelques jours.</span></div></li>
+        <li><div class="n">4</div><div class="tx"><b>Confirmation & paiement</b><span>Réception de la décision et finalisation des frais de scolarité.</span></div></li>
+      </ul>
+    </div>
+    <div class="adm-card">
+      <div class="eyebrow">Pré-inscription 2026</div>
+      <h3>Commencez votre dossier maintenant</h3>
+      <p>Le formulaire en ligne prend environ 10 minutes. Vous pourrez suivre l'état de votre dossier à tout moment.</p>
+      <a href="javascript:void(0)" onclick="openApp('parent')" class="btn btn-primary">Ouvrir le formulaire de pré-inscription →</a>
+      <div class="adm-dates"><span>📅 Rentrée : Octobre 2026</span><span>⏳ Clôture : Août 2026</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROGRAMMES ===== -->
+<section id="programmes">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Programmes académiques</div>
+      <h2>Un niveau par cycle, un objectif clair</h2>
+      <p>Programmes officiels, complétés par l'anglais, l'arabe et les outils numériques.</p>
+    </div>
+    <div class="prog-tabs">
+      <button class="prog-tab active" onclick="showProg('presco',this)">Préscolaire</button>
+      <button class="prog-tab" onclick="showProg('prim',this)">Primaire</button>
+      <button class="prog-tab" onclick="showProg('sec',this)">Secondaire</button>
+    </div>
+    <div class="prog-panel active" id="presco">
+      <div class="class-chip">Crèche</div><div class="class-chip">Petite Section</div><div class="class-chip">Moyenne Section</div><div class="class-chip">Grande Section</div>
+    </div>
+    <div class="prog-panel" id="prim">
+      <div class="class-chip">CI</div><div class="class-chip">CP</div><div class="class-chip">CE1</div><div class="class-chip">CE2</div><div class="class-chip">CM1</div><div class="class-chip">CM2</div>
+    </div>
+    <div class="prog-panel" id="sec">
+      <div class="class-chip">6ème</div><div class="class-chip">5ème</div><div class="class-chip">4ème</div><div class="class-chip">3ème</div><div class="class-chip">2nde</div><div class="class-chip">1ère</div><div class="class-chip">Terminale</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== VIE SCOLAIRE ===== -->
+<section id="vie-scolaire" style="background:var(--panel);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Vie scolaire & activités</div>
+      <h2>Bien plus que des cours</h2>
+    </div>
+    <div class="feat-grid">
+      <div class="feat-card"><div class="ico">🍽️</div><h3>Cantine</h3><p>Repas équilibrés préparés sur place chaque jour.</p></div>
+      <div class="feat-card"><div class="ico">🚌</div><h3>Transport scolaire</h3><p>Circuits de ramassage couvrant les zones environnantes.</p></div>
+      <div class="feat-card"><div class="ico">🩺</div><h3>Santé scolaire</h3><p>Suivi médical de base et infirmerie sur site.</p></div>
+      <div class="feat-card"><div class="ico">👔</div><h3>Uniforme</h3><p>Tenue scolaire obligatoire, disponible auprès de l'école.</p></div>
+      <div class="feat-card"><div class="ico">⚽</div><h3>Sport</h3><p>Activités sportives encadrées après les cours.</p></div>
+      <div class="feat-card"><div class="ico">💻</div><h3>Informatique & robotique</h3><p>Initiation au code et à la robotique dès le primaire.</p></div>
+      <div class="feat-card"><div class="ico">🎭</div><h3>Théâtre & arts</h3><p>Clubs théâtre, musique et arts plastiques.</p></div>
+      <div class="feat-card"><div class="ico">🏆</div><h3>Compétitions</h3><p>Olympiades et concours inter-établissements.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ACTUALITES ===== -->
+<section id="actualites" class="news-strip">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Actualités & événements</div>
+      <h2>Ce qui se passe à AL MAGHREB</h2>
+    </div>
+    <div class="news-grid">
+      <div class="news-card"><div class="news-thumb">🎉</div><div class="news-body"><div class="news-date">Rentrée 2026</div><h3>Ouverture des pré-inscriptions</h3><p>Les dossiers pour l'année scolaire 2026-2027 sont désormais ouverts en ligne.</p></div></div>
+      <div class="news-card"><div class="news-thumb">🚪</div><div class="news-body"><div class="news-date">Journée portes ouvertes</div><h3>Visitez notre établissement</h3><p>Venez découvrir nos classes, nos équipes et nos infrastructures.</p></div></div>
+      <div class="news-card"><div class="news-thumb">🏅</div><div class="news-body"><div class="news-date">Résultats</div><h3>Félicitations à nos élèves</h3><p>Retour sur les réussites aux examens nationaux de l'année précédente.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TEMOIGNAGES ===== -->
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Témoignages</div>
+      <h2>Ce que disent les parents</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card"><p>« Mon fils s'épanouit chaque jour un peu plus. L'équipe pédagogique est très à l'écoute. »</p><div class="testi-who"><div class="av">MD</div><div><b>Moussa Diop</b><span>Parent d'élève, Primaire</span></div></div></div>
+      <div class="testi-card"><p>« La pré-inscription en ligne nous a fait gagner un temps précieux. Tout est simple et clair. »</p><div class="testi-who"><div class="av">AF</div><div><b>Awa Fall</b><span>Parent d'élève, Secondaire</span></div></div></div>
+      <div class="testi-card"><p>« Un cadre sérieux et bienveillant, exactement ce que je cherchais pour mes enfants. »</p><div class="testi-who"><div class="av">CN</div><div><b>Cheikh Ndiaye</b><span>Parent d'élève, Maternelle</span></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section id="contact" class="contact-band">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Contact</div>
+      <h2>Une question ? Écrivez-nous</h2>
+      <p>Notre équipe vous répond sous 24 à 48h ouvrées.</p>
+    </div>
+    <div class="contact-grid">
+      <div>
+        <ul class="contact-info-list">
+          <li><div class="ico">📍</div><div><b>Adresse</b><span>Diamniadio, Cité Port 1 — Sénégal</span></div></li>
+          <li><div class="ico">📞</div><div><b>Téléphone</b><span>77 441 16 33</span></div></li>
+          <li><div class="ico">✉️</div><div><b>Email</b><span>makpape@gmail.com</span></div></li>
+          <li><div class="ico">🕐</div><div><b>Horaires</b><span>Lundi – Vendredi, 8h00 – 17h00</span></div></li>
+        </ul>
+        <div class="map-box">
+          <iframe src="https://www.google.com/maps?q=Diamniadio%2C%20Cit%C3%A9%20Port%201%2C%20S%C3%A9n%C3%A9gal&output=embed" loading="lazy" allowfullscreen></iframe>
+        </div>
+      </div>
+      <form class="cform" onsubmit="event.preventDefault();alert('Message envoyé — merci ! (Formulaire de démonstration)');this.reset();">
+        <div class="row">
+          <div><label>Nom</label><input required placeholder="Votre nom"></div>
+          <div><label>Prénom</label><input required placeholder="Votre prénom"></div>
+        </div>
+        <div class="row">
+          <div><label>Téléphone</label><input placeholder="77 000 00 00"></div>
+          <div><label>Email</label><input type="email" placeholder="vous@email.com"></div>
+        </div>
+        <div style="margin-bottom:12px;">
+          <label>Sujet</label>
+          <select><option>Admissions</option><option>Vie scolaire</option><option>Partenariat</option><option>Autre</option></select>
+        </div>
+        <div style="margin-bottom:12px;">
+          <label>Message</label>
+          <textarea required placeholder="Votre message..."></textarea>
+        </div>
+        <button class="btn btn-gold" type="submit">Envoyer le message</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-grid">
+    <div>
+      <div class="brand" style="margin-bottom:12px;">
+        <div class="brand-mark"><img src="logo.png" alt="Logo AL MAGHREB"></div>
+        <div class="brand-text"><div class="name" style="color:#fff;">AL MAGHREB</div><div class="sub" style="color:#8B90B3;">Groupe Scolaire</div></div>
+      </div>
+      <p style="font-size:12.5px;line-height:1.6;color:#8B90B3;">De la crèche à la Terminale, à Diamniadio. Un parcours éducatif exigeant et bienveillant.</p>
+    </div>
+    <div>
+      <h4>Navigation</h4>
+      <ul><li><a href="#apropos">À propos</a></li><li><a href="#etablissement">Établissement</a></li><li><a href="#programmes">Programmes</a></li><li><a href="#actualites">Actualités</a></li></ul>
+    </div>
+    <div>
+      <h4>Espaces</h4>
+      <ul><li><a href="javascript:void(0)" onclick="openApp('parent')">Pré-inscription</a></li><li><a href="javascript:void(0)" onclick="openApp('parent')">Espace parent</a></li><li><a href="javascript:void(0)" onclick="openApp('admin')">Administration</a></li></ul>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <ul><li>Diamniadio, Cité Port 1</li><li>77 441 16 33</li><li>makpape@gmail.com</li></ul>
+    </div>
+  </div>
+  <div class="wrap foot-bottom">
+    <span>© 2026 Groupe Scolaire AL MAGHREB. Tous droits réservés.</span>
+    <div class="foot-social">
+      <a href="#" title="Facebook">f</a><a href="#" title="Instagram">◎</a><a href="#" title="WhatsApp">☏</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+function closeMenu(){document.getElementById('mobile-menu').classList.remove('open');}
+function showProg(id,btn){
+  document.querySelectorAll('.prog-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.prog-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+
+<!-- ===== LOGIN MODAL ===== -->
+<div class="login-modal-bg" id="login-modal-bg">
+  <div class="login-modal">
+    <h3>Connexion</h3>
+    <p class="lead" id="login-lead">Accès réservé aux parents et à l'administration.</p>
+    <div class="msg" id="login-msg"></div>
+    <form id="login-form">
+      <label>Email</label>
+      <input id="login-email" type="email" required placeholder="vous@email.com" autocomplete="username">
+      <label>Mot de passe</label>
+      <input id="login-password" type="password" required placeholder="••••••••" autocomplete="current-password">
+      <div class="row-btns">
+        <button type="button" class="btn btn-cancel" onclick="closeLoginModal()">Annuler</button>
+        <button type="submit" class="btn btn-primary" id="login-submit-btn">Se connecter</button>
+      </div>
+    </form>
+    <div class="setup-note" id="login-setup-note">
+      ⚙️ Connexion pas encore configurée : renseigne <code>SUPABASE_URL</code> et <code>SUPABASE_ANON_KEY</code> en haut du fichier.
+    </div>
+  </div>
+</div>
+
+<!-- ===== APP OVERLAY: Pré-inscription / Espace parent / Administration ===== -->
+<div class="app-overlay" id="app-overlay">
+  <button class="overlay-close" onclick="closeApp()">✕ Fermer</button>
+<div class="wiz-topbar">
+  <div class="brand">
+    <div class="brand-mark"><img src="logo.png" alt="Logo AL MAGHREB"></div>
+    <div class="brand-text">
+      <div class="name">Groupe Scolaire AL MAGHREB</div>
+      <div class="sub">Crèche · Maternelle · Primaire · Secondaire</div>
+    </div>
+  </div>
+  <div class="mode-switch">
+    <button id="btn-mode-parent" class="active" onclick="switchMode('parent')">Espace parent</button>
+    <button id="btn-mode-admin" onclick="requestAdmin()">Administration</button>
+    <button id="btn-logout" onclick="doLogout()" style="margin-left:10px;display:none;">Déconnexion</button>
+  </div>
+</div>
+
+<div class="app">
+
+  <!-- ===================== PARENT / WIZARD VIEW ===================== -->
+  <div id="view-parent" class="view active" style="width:100%;">
+
+    <div id="wizard-screen">
+      <div class="wiz-hero">
+        <div class="eyebrow">Pré-inscription 2026 · 100% en ligne</div>
+        <h1>Inscrivez votre enfant en quelques étapes</h1>
+        <p>Renseignez le dossier de votre enfant, joignez les pièces demandées et suivez l'avancement de votre demande depuis cet espace.</p>
+      </div>
+
+      <div class="wizard">
+        <nav class="stepper" id="stepper"></nav>
+        <div class="formwrap">
+          <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-eyebrow" id="panel-eyebrow"></div>
+              <h2 id="panel-title"></h2>
+            </div>
+            <div id="panel-body"></div>
+            <div class="nav-row">
+              <button class="btn btn-ghost" id="btn-prev" onclick="prevStep()">← Précédent</button>
+              <button class="btn btn-primary" id="btn-next" onclick="nextStep()">Suivant →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="confirm-screen" style="display:none;">
+      <div class="confirm-wrap">
+        <div class="confirm-badge">✓</div>
+        <h2>Dossier envoyé avec succès</h2>
+        <p style="color:var(--ink-soft);font-size:14.5px;">Un email de confirmation a été envoyé aux parents et l'administration a été notifiée.</p>
+        <div class="dossier-num" id="dossier-num-display"></div><br>
+        <span class="confirm-status">Pré-inscription envoyée</span>
+        <div class="nav-row" style="justify-content:center;gap:12px;margin-top:32px;">
+          <button class="btn btn-ghost" onclick="window.print()">Télécharger le récapitulatif (PDF)</button>
+          <button class="btn btn-primary" onclick="resetWizard()">Nouvelle pré-inscription</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== ADMIN VIEW ===================== -->
+  <div id="view-admin" class="view" style="width:100%;">
+    <div class="admin-wrap">
+      <div class="admin-head">
+        <div>
+          <h1>Tableau de bord — Administration</h1>
+          <p>Suivi des demandes de pré-inscription, Groupe Scolaire AL MAGHREB</p>
+        </div>
+        <div class="export-row">
+          <button class="btn btn-ghost" onclick="exportCSV()">Exporter en Excel (CSV)</button>
+          <button class="btn btn-ghost" onclick="window.print()">Exporter en PDF</button>
+        </div>
+      </div>
+
+      <div class="stats-row" id="stats-row"></div>
+
+      <div class="filters">
+        <select id="f-cycle" onchange="renderTable()">
+          <option value="">Tous les cycles</option>
+          <option>Crèche</option><option>Maternelle</option><option>Primaire</option><option>Secondaire</option>
+        </select>
+        <select id="f-statut" onchange="renderTable()">
+          <option value="">Tous les statuts</option>
+          <option>Pré-inscription envoyée</option><option>En cours d'étude</option>
+          <option>Acceptée</option><option>Liste d'attente</option><option>Refusée</option>
+        </select>
+        <input type="text" id="f-search" placeholder="Rechercher un élève..." oninput="renderTable()">
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>N° Dossier</th><th>Élève</th><th>Cycle / Classe</th><th>Sexe</th><th>Parent</th><th>Statut</th><th>Actions</th></tr>
+          </thead>
+          <tbody id="admin-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+
+<script>
+
+/* ============ DATA MODEL ============ */
+const CLASSES = ["Petite Section","Moyenne Section","Grande Section","CI","CP","CE1","CE2","CM1","CM2","6ème","5ème","4ème","3ème","2nde","1ère","Terminale"];
+
+const STEPS = [
+{key:"eleve", title:"Informations sur l'élève", eyebrow:"Étape 1", fields:[
+  {type:"photo", name:"photo_eleve", label:"Photo d'identité"},
+  {type:"text", name:"nom", label:"Nom", required:true, half:true},
+  {type:"text", name:"prenom", label:"Prénom(s)", required:true, half:true},
+  {type:"radio", name:"sexe", label:"Sexe", required:true, half:true, options:["Masculin","Féminin"]},
+  {type:"date", name:"naissance_date", label:"Date de naissance", required:true, half:true},
+  {type:"text", name:"naissance_lieu", label:"Lieu de naissance", required:true, half:true},
+  {type:"text", name:"nationalite", label:"Nationalité", required:true, half:true},
+  {type:"text", name:"acte_naissance", label:"Numéro d'acte de naissance", opt:true, half:true},
+  {type:"text", name:"etab_precedent", label:"Établissement fréquenté l'année précédente", half:true},
+  {type:"select", name:"derniere_classe", label:"Dernière classe fréquentée", options:CLASSES, half:true},
+  {type:"select", name:"classe_souhaitee", label:"Classe souhaitée", required:true, options:CLASSES, half:true},
+  {type:"radio", name:"cycle", label:"Cycle", required:true, half:true, options:["Crèche","Maternelle","Primaire","Secondaire"]},
+  {type:"text", name:"langue_principale", label:"Langue principale", half:true},
+  {type:"check", name:"langues", label:"Langues étudiées", full:true, options:["Français","Anglais","Arabe"]},
+  {type:"check", name:"options", label:"Options souhaitées", full:true, options:["Informatique","Robotique","Musique","Théâtre","Arts plastiques","Club scientifique","Sport"]},
+]},
+{key:"pere", title:"Informations sur le père", eyebrow:"Étape 2", fields:[
+  {type:"text", name:"pere_nom", label:"Nom et prénom", required:true, full:true},
+  {type:"text", name:"pere_profession", label:"Profession", half:true},
+  {type:"text", name:"pere_employeur", label:"Employeur", half:true},
+  {type:"tel", name:"pere_tel1", label:"Téléphone principal", required:true, half:true},
+  {type:"tel", name:"pere_tel2", label:"Téléphone secondaire", opt:true, half:true},
+  {type:"email", name:"pere_email", label:"Email", half:true},
+  {type:"textarea", name:"pere_adresse", label:"Adresse complète", full:true},
+]},
+{key:"mere", title:"Informations sur la mère", eyebrow:"Étape 3", fields:[
+  {type:"text", name:"mere_nom", label:"Nom et prénom", required:true, full:true},
+  {type:"text", name:"mere_profession", label:"Profession", half:true},
+  {type:"text", name:"mere_employeur", label:"Employeur", half:true},
+  {type:"tel", name:"mere_tel1", label:"Téléphone principal", required:true, half:true},
+  {type:"tel", name:"mere_tel2", label:"Téléphone secondaire", opt:true, half:true},
+  {type:"email", name:"mere_email", label:"Email", half:true},
+  {type:"textarea", name:"mere_adresse", label:"Adresse complète", full:true},
+]},
+{key:"tuteur", title:"Tuteur légal (si applicable)", eyebrow:"Étape 4", fields:[
+  {type:"text", name:"tuteur_nom", label:"Nom et prénom", opt:true, half:true},
+  {type:"text", name:"tuteur_lien", label:"Lien de parenté", opt:true, half:true},
+  {type:"text", name:"tuteur_profession", label:"Profession", opt:true, half:true},
+  {type:"tel", name:"tuteur_tel", label:"Téléphone", opt:true, half:true},
+  {type:"email", name:"tuteur_email", label:"Email", opt:true, half:true},
+  {type:"textarea", name:"tuteur_adresse", label:"Adresse", opt:true, full:true},
+]},
+{key:"residence", title:"Adresse de résidence", eyebrow:"Étape 5", fields:[
+  {type:"text", name:"region", label:"Région", required:true, half:true},
+  {type:"text", name:"departement", label:"Département", required:true, half:true},
+  {type:"text", name:"commune", label:"Commune", required:true, half:true},
+  {type:"text", name:"quartier", label:"Quartier", half:true},
+  {type:"text", name:"rue", label:"Rue", half:true},
+  {type:"text", name:"numero_maison", label:"Numéro de maison", half:true},
+  {type:"text", name:"code_postal", label:"Code postal", opt:true, half:true},
+  {type:"text", name:"gmaps", label:"Localisation Google Maps (lien)", opt:true, half:true},
+]},
+{key:"medical", title:"Informations médicales", eyebrow:"Étape 6", fields:[
+  {type:"select", name:"groupe_sanguin", label:"Groupe sanguin", opt:true, half:true, options:["A+","A-","B+","B-","AB+","AB-","O+","O-"]},
+  {type:"text", name:"medecin", label:"Nom du médecin traitant", opt:true, half:true},
+  {type:"text", name:"allergies", label:"Allergies", opt:true, half:true},
+  {type:"text", name:"maladies", label:"Maladies particulières", opt:true, half:true},
+  {type:"text", name:"traitement", label:"Traitement médical en cours", opt:true, half:true},
+  {type:"text", name:"handicap", label:"Handicap éventuel", opt:true, half:true},
+  {type:"text", name:"urgence_nom", label:"Personne à contacter en cas d'urgence", required:true, half:true},
+  {type:"tel", name:"urgence_tel", label:"Téléphone d'urgence", required:true, half:true},
+]},
+{key:"transport", title:"Transport scolaire", eyebrow:"Étape 7", fields:[
+  {type:"radio", name:"transport_souhaite", label:"Souhaitez-vous bénéficier du transport scolaire ?", required:true, full:true, options:["Oui","Non"]},
+  {type:"text", name:"transport_ramassage", label:"Adresse de ramassage", half:true, showIf:{field:"transport_souhaite",value:"Oui"}},
+  {type:"text", name:"transport_depose", label:"Adresse de dépose", half:true, showIf:{field:"transport_souhaite",value:"Oui"}},
+]},
+{key:"cantine", title:"Cantine scolaire", eyebrow:"Étape 8", fields:[
+  {type:"radio", name:"cantine_souhaite", label:"Souhaitez-vous inscrire votre enfant à la cantine ?", required:true, full:true, options:["Oui","Non"]},
+]},
+{key:"autorises", title:"Personnes autorisées à récupérer l'enfant", eyebrow:"Étape 9", custom:"guardians"},
+{key:"documents", title:"Documents à téléverser", eyebrow:"Étape 10", custom:"documents"},
+{key:"paiement", title:"Paiement des frais d'inscription", eyebrow:"Étape 11", custom:"payment"},
+{key:"observations", title:"Observations", eyebrow:"Étape 12", fields:[
+  {type:"textarea", name:"observations", label:"Remarques concernant l'élève", opt:true, full:true},
+]},
+{key:"declaration", title:"Déclaration", eyebrow:"Étape 13", custom:"declaration"},
+{key:"signature", title:"Signature électronique", eyebrow:"Étape 14", custom:"signature"},
+];
+
+const DOC_LIST = ["Extrait de naissance","Photo d'identité","Certificat de scolarité","Dernier bulletin","Certificat médical","Carnet de vaccination","Copie CNI/Passeport du parent","Justificatif de domicile","Reçu de paiement (si applicable)"];
+const PAY_METHODS = [{k:"Wave",i:"📱"},{k:"Orange Money",i:"🟠"},{k:"Carte bancaire",i:"💳"},{k:"Virement bancaire",i:"🏦"},{k:"Paiement à l'établissement",i:"🏫"}];
+
+let current = 0;
+let data = {langues:[], options:[], guardians:[], docs:{}};
+
+/* ============ RENDER STEPPER ============ */
+function renderStepper(){
+  const el = document.getElementById('stepper');
+  el.innerHTML = '<div class="stepper-title">Progression du dossier</div>' + STEPS.map((s,i)=>{
+    const cls = i===current?'current':(i<current?'done':'');
+    return `<div class="step-item ${cls}" onclick="goToStep(${i})">
+      <div class="line"></div>
+      <div class="step-num">${i<current?'✓':i+1}</div>
+      <div class="step-label">${s.title}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('progress-fill').style.width = (current/(STEPS.length-1)*100)+'%';
+}
+
+function goToStep(i){ if(i<=current){ current=i; renderStep(); } }
+
+/* ============ FIELD RENDERERS ============ */
+function fieldHTML(f){
+  const val = data[f.name] ?? (f.type==='check'?[]:'');
+  const req = f.required?'required':'';
+  const optLabel = f.opt ? '<span class="opt">(optionnel)</span>' : (f.required?'':'<span class="opt">(optionnel)</span>');
+  let inner = '';
+  if(f.type==='text'||f.type==='date'||f.type==='email'||f.type==='tel'){
+    inner = `<input type="${f.type}" name="${f.name}" value="${val||''}" ${req} oninput="setVal('${f.name}',this.value)">`;
+  } else if(f.type==='textarea'){
+    inner = `<textarea name="${f.name}" ${req} oninput="setVal('${f.name}',this.value)">${val||''}</textarea>`;
+  } else if(f.type==='select'){
+    inner = `<select name="${f.name}" ${req} onchange="setVal('${f.name}',this.value)">
+      <option value="">Sélectionner...</option>
+      ${f.options.map(o=>`<option value="${o}" ${val===o?'selected':''}>${o}</option>`).join('')}
+    </select>`;
+  } else if(f.type==='radio'){
+    inner = `<div class="radio-row">${f.options.map(o=>`
+      <label class="pill-option ${val===o?'checked':''}">
+        <input type="radio" name="${f.name}" value="${o}" ${val===o?'checked':''} onchange="setVal('${f.name}','${o}');renderStep();">${o}
+      </label>`).join('')}</div>`;
+  } else if(f.type==='check'){
+    const arr = data[f.name]||[];
+    inner = `<div class="check-row">${f.options.map(o=>`
+      <label class="pill-option ${arr.includes(o)?'checked':''}">
+        <input type="checkbox" value="${o}" ${arr.includes(o)?'checked':''} onchange="toggleArr('${f.name}','${o}')">${o}
+      </label>`).join('')}</div>`;
+  } else if(f.type==='photo'){
+    const img = data[f.name+'_preview'];
+    inner = `<label class="photo-upload">${img?`<img src="${img}">`:'<span>Ajouter<br>une photo</span>'}
+      <input type="file" accept="image/*" onchange="handlePhoto(this,'${f.name}')"></label>`;
+  }
+  const width = f.full ? 'field full' : 'field';
+  if(f.type==='photo') return `<div class="field">${inner}</div>`;
+  return `<div class="${width}"><label>${f.label} ${optLabel}</label>${inner}<div class="field-error-msg">Ce champ est requis</div></div>`;
+}
+
+function setVal(name,val){ data[name]=val; }
+function toggleArr(name,val){
+  if(!data[name]) data[name]=[];
+  const i = data[name].indexOf(val);
+  if(i>-1) data[name].splice(i,1); else data[name].push(val);
+  renderStep();
+}
+function handlePhoto(input,name){
+  const file = input.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e=>{ data[name+'_preview']=e.target.result; data[name]=file.name; renderStep(); };
+  reader.readAsDataURL(file);
+}
+
+/* ============ CUSTOM STEPS ============ */
+function renderGuardians(){
+  const list = data.guardians;
+  let html = list.map((g,i)=>`
+    <div class="guardian-card">
+      <button class="rm" onclick="removeGuardian(${i})">Retirer</button>
+      <div class="field-grid">
+        <div class="field"><label>Nom</label><input value="${g.nom||''}" oninput="data.guardians[${i}].nom=this.value"></div>
+        <div class="field"><label>Prénom</label><input value="${g.prenom||''}" oninput="data.guardians[${i}].prenom=this.value"></div>
+        <div class="field"><label>Lien de parenté</label><input value="${g.lien||''}" oninput="data.guardians[${i}].lien=this.value"></div>
+        <div class="field"><label>Téléphone</label><input value="${g.tel||''}" oninput="data.guardians[${i}].tel=this.value"></div>
+      </div>
+    </div>`).join('');
+  html += `<button class="add-guardian" onclick="addGuardian()">+ Ajouter une personne autorisée</button>`;
+  return html;
+}
+function addGuardian(){ data.guardians.push({}); renderStep(); }
+function removeGuardian(i){ data.guardians.splice(i,1); renderStep(); }
+
+function renderDocuments(){
+  return `<div class="doc-grid">${DOC_LIST.map((d,i)=>{
+    const filled = data.docs[d];
+    return `<label class="upload-box ${filled?'filled':''}">
+      ${filled?('✓ '+d):('📎 '+d+' (PDF, JPG, PNG)')}
+      ${filled?`<div class="fname">${filled}</div>`:''}
+      <input type="file" accept=".pdf,.jpg,.jpeg,.png" onchange="handleDoc(this,'${d.replace(/'/g,"\\'")}')">
+    </label>`;
+  }).join('')}</div>`;
+}
+function handleDoc(input,key){ const f=input.files[0]; if(!f) return; data.docs[key]=f.name; renderStep(); }
+
+function renderPayment(){
+  return `<div class="pay-grid">${PAY_METHODS.map(m=>`
+    <label class="pay-card ${data.paiement===m.k?'checked':''}">
+      <input type="radio" name="paiement" value="${m.k}" ${data.paiement===m.k?'checked':''} onchange="setVal('paiement','${m.k}');renderStep();">
+      <span class="ico">${m.i}</span><span class="name">${m.k}</span>
+    </label>`).join('')}</div>
+    <p style="font-size:12.5px;color:var(--ink-soft);margin-top:14px;">Après paiement : génération automatique d'un reçu PDF, email de confirmation et notification à l'administration.</p>`;
+}
+
+function renderDeclaration(){
+  const items = [
+    ["decl_exact","Je certifie que toutes les informations fournies sont exactes."],
+    ["decl_reglement","J'accepte le règlement intérieur de l'établissement."],
+    ["decl_donnees","J'autorise le traitement des données personnelles conformément à la réglementation en vigueur."],
+  ];
+  return items.map(([k,label])=>`
+    <div class="decl-row">
+      <input type="checkbox" id="${k}" ${data[k]?'checked':''} onchange="setVal('${k}',this.checked)">
+      <label for="${k}">${label}</label>
+    </div>`).join('');
+}
+
+function renderSignature(){
+  return `
+    <div class="field-grid" style="margin-bottom:16px;">
+      <div class="field half"><label>Nom du signataire</label><input value="${data.sig_nom||''}" oninput="setVal('sig_nom',this.value)"></div>
+      <div class="field half"><label>Date</label><input type="date" value="${data.sig_date||''}" oninput="setVal('sig_date',this.value)"></div>
+    </div>
+    <label style="font-size:13px;font-weight:600;">Signez ci-dessous</label>
+    <canvas id="sigpad" class="sigpad" width="600" height="150"></canvas>
+    <div class="sig-tools"><button onclick="clearSig()">Effacer la signature</button></div>
+  `;
+}
+let sigCtx, drawing=false;
+function initSig(){
+  const c = document.getElementById('sigpad'); if(!c) return;
+  sigCtx = c.getContext('2d'); sigCtx.lineWidth=2; sigCtx.lineCap='round'; sigCtx.strokeStyle='#1E2233';
+  const pos = e=>{ const r=c.getBoundingClientRect(); const t=e.touches?e.touches[0]:e; return [(t.clientX-r.left)*(c.width/r.width),(t.clientY-r.top)*(c.height/r.height)]; };
+  const start = e=>{ drawing=true; const [x,y]=pos(e); sigCtx.beginPath(); sigCtx.moveTo(x,y); e.preventDefault(); };
+  const move = e=>{ if(!drawing) return; const [x,y]=pos(e); sigCtx.lineTo(x,y); sigCtx.stroke(); data.signature_done=true; e.preventDefault(); };
+  const end = ()=>{ drawing=false; };
+  c.addEventListener('mousedown',start); c.addEventListener('mousemove',move); window.addEventListener('mouseup',end);
+  c.addEventListener('touchstart',start); c.addEventListener('touchmove',move); c.addEventListener('touchend',end);
+}
+function clearSig(){ sigCtx.clearRect(0,0,600,150); data.signature_done=false; }
+
+/* ============ MAIN STEP RENDER ============ */
+function renderStep(){
+  renderStepper();
+  const step = STEPS[current];
+  document.getElementById('panel-eyebrow').textContent = step.eyebrow;
+  document.getElementById('panel-title').textContent = step.title;
+  const body = document.getElementById('panel-body');
+
+  if(step.custom==='guardians') body.innerHTML = renderGuardians();
+  else if(step.custom==='documents') body.innerHTML = renderDocuments();
+  else if(step.custom==='payment') body.innerHTML = renderPayment();
+  else if(step.custom==='declaration') body.innerHTML = renderDeclaration();
+  else if(step.custom==='signature'){ body.innerHTML = renderSignature(); setTimeout(initSig,10); }
+  else {
+    body.innerHTML = `<div class="field-grid">${step.fields.filter(f=>{
+      if(!f.showIf) return true;
+      return data[f.showIf.field]===f.showIf.value;
+    }).map(fieldHTML).join('')}</div>`;
+  }
+
+  document.getElementById('btn-prev').style.visibility = current===0?'hidden':'visible';
+  document.getElementById('btn-next').textContent = current===STEPS.length-1 ? 'Envoyer le dossier ✓' : 'Suivant →';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function validateStep(){
+  const step = STEPS[current];
+  if(!step.fields) return true;
+  let ok = true;
+  step.fields.forEach(f=>{
+    if(f.required && !f.showIf){
+      if(f.type==='check'){ if(!(data[f.name]&&data[f.name].length)) ok=false; }
+      else if(!data[f.name]) ok=false;
+    }
+    if(f.required && f.showIf && data[f.showIf.field]===f.showIf.value && !data[f.name]) ok=false;
+  });
+  if(!ok) alert("Merci de compléter les champs obligatoires avant de continuer.");
+  return ok;
+}
+
+function nextStep(){
+  if(!validateStep()) return;
+  if(current < STEPS.length-1){ current++; renderStep(); }
+  else { submitDossier(); }
+}
+function prevStep(){ if(current>0){ current--; renderStep(); } }
+
+/* ============ SUBMIT ============ */
+let submissions = [];
+
+async function submitDossier(){
+  const btn = document.getElementById('btn-next');
+  if(btn){ btn.disabled = true; btn.textContent = "Envoi..."; }
+
+  const num = "ALM-2026-" + Date.now();
+  const { error } = await __supabase.from('inscriptions').insert({
+    num, nom:data.nom||'—', prenom:data.prenom||'—', cycle:data.cycle||'—',
+    classe:data.classe_souhaitee||'—', sexe:data.sexe||'—',
+    parent:(data.pere_nom||data.mere_nom||'—'), statut:"Pré-inscription envoyée"
+  });
+
+  if(btn){ btn.disabled = false; btn.textContent = "Suivant →"; }
+
+  if(error){
+    alert("Erreur lors de l'envoi du dossier : " + error.message);
+    return;
+  }
+
+  document.getElementById('dossier-num-display').textContent = num;
+  document.getElementById('wizard-screen').style.display='none';
+  document.getElementById('confirm-screen').style.display='block';
+}
+
+function resetWizard(){
+  current=0; data = {langues:[], options:[], guardians:[], docs:{}};
+  document.getElementById('confirm-screen').style.display='none';
+  document.getElementById('wizard-screen').style.display='block';
+  renderStep();
+}
+
+/* ============ MODE SWITCH ============ */
+function switchMode(m){
+  document.getElementById('view-parent').classList.toggle('active', m==='parent');
+  document.getElementById('view-admin').classList.toggle('active', m==='admin');
+  document.getElementById('btn-mode-parent').classList.toggle('active', m==='parent');
+  document.getElementById('btn-mode-admin').classList.toggle('active', m==='admin');
+  if(m==='admin'){ loadSubmissions(); }
+}
+
+/* ============ ADMIN ============ */
+async function loadSubmissions(){
+  const tbody = document.getElementById('admin-tbody');
+  tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:28px;">Chargement...</td></tr>`;
+  const { data: rows, error } = await __supabase
+    .from('inscriptions')
+    .select('*')
+    .order('created_at', { ascending:false });
+  if(error){
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:red;padding:28px;">Erreur : ${error.message}</td></tr>`;
+    return;
+  }
+  submissions = rows;
+  renderStats(); renderTable();
+}
+
+function renderStats(){
+  const byCycle = {};
+  submissions.forEach(s=>byCycle[s.cycle]=(byCycle[s.cycle]||0)+1);
+  const total = submissions.length;
+  const filles = submissions.filter(s=>s.sexe==='Féminin').length;
+  document.getElementById('stats-row').innerHTML = `
+    <div class="stat-card"><div class="num">${total}</div><div class="lbl">Total demandes</div></div>
+    <div class="stat-card"><div class="num">${byCycle['Primaire']||0}</div><div class="lbl">Primaire</div></div>
+    <div class="stat-card"><div class="num">${byCycle['Secondaire']||0}</div><div class="lbl">Secondaire</div></div>
+    <div class="stat-card"><div class="num">${byCycle['Maternelle']||0}</div><div class="lbl">Maternelle</div></div>
+    <div class="stat-card"><div class="num">${filles}</div><div class="lbl">Filles inscrites</div></div>
+  `;
+}
+
+function statusClass(s){
+  return {"Pré-inscription envoyée":"envoyee","En cours d'étude":"etude","Acceptée":"acceptee","Liste d'attente":"attente","Refusée":"refusee"}[s]||"envoyee";
+}
+
+function renderTable(){
+  const cycle = document.getElementById('f-cycle').value;
+  const statut = document.getElementById('f-statut').value;
+  const search = document.getElementById('f-search').value.toLowerCase();
+  const rows = submissions.filter(s=>
+    (!cycle || s.cycle===cycle) &&
+    (!statut || s.statut===statut) &&
+    (!search || (s.nom+' '+s.prenom).toLowerCase().includes(search))
+  );
+  document.getElementById('admin-tbody').innerHTML = rows.map(s=>`
+    <tr>
+      <td style="font-family:var(--font-mono);font-size:12px;">${s.num}</td>
+      <td>${s.prenom} ${s.nom}</td>
+      <td>${s.cycle} · ${s.classe}</td>
+      <td>${s.sexe}</td>
+      <td>${s.parent}</td>
+      <td><span class="badge ${statusClass(s.statut)}">${s.statut}</span></td>
+      <td class="row-actions">
+        <button onclick="setStatus('${s.num}','Acceptée')">Accepter</button>
+        <button onclick="setStatus('${s.num}','Liste d\\'attente')">Attente</button>
+        <button onclick="setStatus('${s.num}','Refusée')">Refuser</button>
+      </td>
+    </tr>`).join('') || `<tr><td colspan="7" style="text-align:center;color:var(--ink-soft);padding:28px;">Aucune demande trouvée.</td></tr>`;
+}
+async function setStatus(num,statut){
+  const { error } = await __supabase.from('inscriptions').update({ statut }).eq('num', num);
+  if(error){ alert("Erreur lors du changement de statut : " + error.message); return; }
+  await loadSubmissions();
+}
+function exportCSV(){
+  const header = "N° Dossier,Nom,Prénom,Cycle,Classe,Sexe,Parent,Statut\n";
+  const rows = submissions.map(s=>[s.num,s.nom,s.prenom,s.cycle,s.classe,s.sexe,s.parent,s.statut].join(",")).join("\n");
+  const blob = new Blob([header+rows],{type:"text/csv;charset=utf-8;"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url; a.download="preinscriptions_al_maghreb.csv"; a.click();
+}
+
+/* ===================== CONFIGURATION SUPABASE ===================== */
+
+const SUPABASE_URL = "https://xeerwmpowlcwdfhhbwez.supabase.co";
+
+const SUPABASE_ANON_KEY = "sb_publishable_S3vV-EY7GX2wX9yhpJo0zA_KMJXtR1S";
+
+const __isConfigured = !SUPABASE_URL.includes("YOUR-PROJECT");
+
+const __supabase = __isConfigured 
+    ? supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) 
+    : null;
+
+window.__userRole = null;
+window.__sessionChecked = false;
+
+/* ==================================================================== */
+(async function initAuth(){
+  if(__isConfigured){
+    const { data:{session} } = await __supabase.auth.getSession();
+    window.__userRole = session?.user?.user_metadata?.role || null;
+  }
+  window.__sessionChecked = true;
+})();
+
+async function waitSessionChecked(){
+  while(!window.__sessionChecked){ await new Promise(r=>setTimeout(r,60)); }
+}
+
+/* ============ APP OVERLAY ============ */
+let __pendingMode = null;
+
+function openApp(mode){
+  if(mode === 'admin'){ requestAdmin(); }
+  else { requestParent(); }
+}
+function closeApp(){
+  document.getElementById('app-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+}
+function showOverlay(){
+  document.getElementById('app-overlay').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+
+async function requestParent(){
+  // Accès public : aucune connexion requise pour la pré-inscription.
+  if(__isConfigured){
+    await waitSessionChecked();
+    if(window.__userRole === 'admin'){ document.getElementById('btn-logout').style.display = 'inline-block'; }
+  }
+  switchMode('parent');
+  showOverlay();
+}
+
+async function requestAdmin(){
+  if(!__isConfigured){ openLoginModal('admin'); return; }
+  await waitSessionChecked();
+  if(window.__userRole !== 'admin'){ openLoginModal('admin'); return; }
+  document.getElementById('btn-logout').style.display = 'inline-block';
+  switchMode('admin');
+  showOverlay();
+}
+
+function doLogout(){
+  const finish = ()=>{
+    window.__userRole = null;
+    document.getElementById('btn-logout').style.display = 'none';
+    closeApp();
+  };
+  if(__supabase){ __supabase.auth.signOut().then(finish); } else { finish(); }
+}
+
+/* ============ LOGIN MODAL ============ */
+function openLoginModal(nextMode){
+  __pendingMode = nextMode || 'parent';
+  document.getElementById('login-modal-bg').style.display = 'flex';
+  document.getElementById('login-setup-note').style.display = __isConfigured ? 'none' : 'block';
+  document.getElementById('login-msg').classList.remove('show');
+  document.getElementById('login-lead').textContent = nextMode === 'admin'
+    ? "Connexion Administration."
+    : "Connexion Espace parent.";
+}
+function closeLoginModal(){
+  document.getElementById('login-modal-bg').style.display = 'none';
+  document.getElementById('login-form').reset();
+}
+
+document.getElementById('login-form').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const msg = document.getElementById('login-msg');
+  const btn = document.getElementById('login-submit-btn');
+  msg.classList.remove('show');
+  if(!__isConfigured){
+    msg.textContent = "Connexion pas encore configurée (Supabase).";
+    msg.classList.add('show');
+    return;
+  }
+  const email = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+  btn.disabled = true; btn.textContent = "Connexion...";
+  const { data, error } = await __supabase.auth.signInWithPassword({ email, password });
+  btn.disabled = false; btn.textContent = "Se connecter";
+
+  if(error){
+    msg.textContent = "Email ou mot de passe incorrect.";
+    msg.classList.add('show');
+    return;
+  }
+  window.__userRole = data.user?.user_metadata?.role || "parent";
+  closeLoginModal();
+
+  if(__pendingMode === 'admin'){
+    if(window.__userRole !== 'admin'){
+      alert("Ce compte n'a pas les droits d'administration.");
+      return;
+    }
+    document.getElementById('btn-logout').style.display = 'inline-block';
+    switchMode('admin');
+  } else {
+    if(window.__userRole === 'admin'){ document.getElementById('btn-logout').style.display = 'inline-block'; }
+    switchMode('parent');
+  }
+  showOverlay();
+});
+
+/* ============ INIT ============ */
+renderStep();
+</script>
+
+</body>
+</html>
 
